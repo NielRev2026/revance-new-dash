@@ -6,6 +6,7 @@
     { label: 'Rewards',      href: 'rewards.html' },
     { label: 'Products',     href: 'purchase.html' },
     { label: 'Experience',   href: 'experience.html' },
+    { label: 'Education',    href: '#' },
     { label: 'Insights',  href: 'numbers.html' },
     { label: 'Check In',     href: 'checkin.html' },
   ];
