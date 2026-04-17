@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Experience — Revance</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://images.unsplash.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700&family=Playfair+Display:ital,wght@1,400;1,500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fff;
+  --fg: #111;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+html { scroll-behavior: smooth; }
+html, body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+  overflow-x: hidden;
+  min-height: 100vh;
+  transition: background 0.05s linear, color 0.05s linear;
+}
+
+/* ─── NAV ─── */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0;
+  height: 64px;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 40px;
+  background: var(--nav-bg, rgba(255,255,255,0.72));
+  backdrop-filter: saturate(180%) blur(24px);
+  -webkit-backdrop-filter: saturate(180%) blur(24px);
+  border-bottom: 1px solid var(--nav-border, rgba(0,0,0,0.04));
+  z-index: 100;
+  transition: background 0.2s ease, border 0.2s ease;
+}
+.nav.dark {
+  --nav-bg: rgba(0,0,0,0.65);
+  --nav-border: rgba(255,255,255,0.08);
+}
+.brand-link { text-decoration: none; }
+.brand { font-size: 14px; font-weight: 600; letter-spacing: 3px; color: var(--fg); transition: color .2s ease; }
+.nav-right { display: flex; align-items: center; gap: 32px; }
+.nav-link { font-size: 13px; font-weight: 500; color: var(--nav-muted, #666); text-decoration: none; transition: color .2s ease; }
+.nav-link:hover, .nav-link.active { color: var(--fg); }
+.nav.dark { --nav-muted: rgba(255,255,255,0.6); }
+.nav.dark .brand, .nav.dark .nav-link.active { color: #fff; }
+.nav-avatar {
+  width: 32px; height: 32px;
+  background: linear-gradient(135deg, #FFB088, #FF7A9C);
+  box-shadow: 0 2px 8px rgba(255,122,156,0.25);
+}
+
+/* ─── INTRO ─── */
+.intro {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 120px 40px 40px;
+  text-align: center;
+  position: relative;
+}
+.intro-eyebrow {
+  font-size: 11px; font-weight: 600; letter-spacing: 2.4px;
+  color: #999; text-transform: uppercase;
+  margin-bottom: 32px;
+  opacity: 0;
+  animation: fadeUp 1s cubic-bezier(.16,1,.3,1) forwards;
+}
+.intro h1 {
+  font-size: clamp(44px, 7vw, 108px);
+  font-weight: 200;
+  letter-spacing: -3.5px;
+  line-height: 1.04;
+  color: #111;
+  max-width: 1300px;
+  min-height: 1.2em;
+}
+.intro h1 .italic-accent {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -1.5px;
+}
+.intro .cursor {
+  display: inline-block;
+  width: 3px;
+  height: 0.86em;
+  background: #111;
+  margin-left: 6px;
+  vertical-align: -0.08em;
+  animation: blink 1.05s steps(2, end) infinite;
+}
+.intro .cursor.hidden { display: none; }
+@keyframes blink { 0%, 50% { opacity: 1; } 50.01%, 100% { opacity: 0; } }
+
+.scroll-hint {
+  position: absolute;
+  bottom: 48px; left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  font-size: 10px;
+  letter-spacing: 2.4px;
+  font-weight: 600;
+  color: #999;
+  text-transform: uppercase;
+  opacity: 0;
+  animation: fadeUp 1s 3s cubic-bezier(.16,1,.3,1) forwards;
+}
+.scroll-hint-line {
+  width: 1px; height: 48px;
+  background: linear-gradient(to bottom, transparent, #999);
+  animation: scrollPulse 2.4s ease-in-out infinite;
+}
+@keyframes scrollPulse {
+  0%, 100% { transform: translateY(0); opacity: 0.4; }
+  50%      { transform: translateY(6px); opacity: 1; }
+}
+@keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+
+/* ─── FADE TO BLACK ─── */
+.fade-section {
+  height: 70vh;
+  position: relative;
+}
+
+/* ─── SCENE ─── */
+.scene {
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
+  background: #000;
+}
+.scene-media {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  transform: translateY(10%) scale(0.98);
+  opacity: 0;
+  transition: transform 1.6s cubic-bezier(.16,1,.3,1), opacity 1.4s ease;
+}
+.scene.in-view .scene-media {
+  transform: translateY(0) scale(1);
+  opacity: 1;
+}
+.scene::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.15) 0%, transparent 30%, transparent 55%, rgba(0,0,0,0.75) 100%);
+  z-index: 1;
+}
+.scene-overlay {
+  position: relative;
+  z-index: 2;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 0 64px 80px;
+  color: #fff;
+  max-width: 1520px;
+  margin: 0 auto;
+}
+.scene-overlay > * {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 1.2s ease, transform 1.2s cubic-bezier(.16,1,.3,1);
+}
+.scene.in-view .scene-overlay > * { opacity: 1; transform: none; }
+.scene.in-view .scene-overlay > *:nth-child(1) { transition-delay: .3s; }
+.scene.in-view .scene-overlay > *:nth-child(2) { transition-delay: .45s; }
+.scene.in-view .scene-overlay > *:nth-child(3) { transition-delay: .6s; }
+
+.scene-label {
+  font-size: 11px; font-weight: 600; letter-spacing: 3px;
+  text-transform: uppercase; color: rgba(255,255,255,0.7);
+  margin-bottom: 20px;
+}
+.scene-title {
+  font-size: clamp(48px, 6.8vw, 104px);
+  font-weight: 200;
+  letter-spacing: -3px;
+  line-height: 1;
+  margin-bottom: 22px;
+  max-width: 900px;
+}
+.scene-caption {
+  font-size: clamp(16px, 1.4vw, 20px);
+  font-weight: 300;
+  color: rgba(255,255,255,0.8);
+  max-width: 540px;
+  line-height: 1.5;
+}
+.scene-cta {
+  margin-top: 32px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 24px;
+  background: #fff;
+  color: #111;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  text-decoration: none;
+  align-self: flex-start;
+  transition: gap .25s ease, background .2s ease, transform .25s ease;
+}
+.scene-cta:hover { gap: 14px; background: #f1f1f1; }
+.scene-cta svg { width: 14px; height: 14px; }
+.scene.in-view .scene-overlay > *:nth-child(4) { transition-delay: .75s; }
+
+/* ─── OUTRO ─── */
+.outro {
+  min-height: 100vh;
+  background: #000;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 120px 40px;
+  text-align: center;
+  gap: 40px;
+}
+.outro-eyebrow {
+  font-size: 11px; font-weight: 600; letter-spacing: 2.4px;
+  color: rgba(255,255,255,0.5); text-transform: uppercase;
+}
+.outro h2 {
+  font-size: clamp(48px, 7.2vw, 120px);
+  font-weight: 200;
+  letter-spacing: -3.5px;
+  line-height: 1;
+  max-width: 1200px;
+}
+.outro h2 em { font-style: normal; font-weight: 500; background: linear-gradient(135deg, #FFB088, #FF7A9C 50%, #8EC5FC); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.outro .outro-sub {
+  font-size: 18px; font-weight: 300; color: rgba(255,255,255,0.65);
+  max-width: 560px; line-height: 1.5;
+}
+.outro-cta {
+  margin-top: 16px;
+  display: inline-flex; align-items: center; gap: 12px;
+  padding: 20px 32px;
+  background: #fff; color: #000;
+  font-family: inherit; font-size: 13px; font-weight: 500;
+  letter-spacing: 0.5px;
+  text-decoration: none;
+  transition: gap .25s ease, background .2s ease;
+}
+.outro-cta:hover { gap: 16px; background: #f0f0f0; }
+.outro-cta svg { width: 14px; height: 14px; }
+
+/* ─── FOOTER ─── */
+.footer {
+  padding: 48px 64px;
+  background: #000;
+  color: #fff;
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
+.footer-inner {
+  max-width: 1520px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 32px;
+  flex-wrap: wrap;
+}
+.footer-left { display: flex; align-items: center; gap: 24px; }
+.footer-brand { font-size: 12px; font-weight: 600; letter-spacing: 2px; color: #fff; }
+.footer-copy { font-size: 12px; color: rgba(255,255,255,0.45); letter-spacing: 0.3px; }
+.footer-nav { display: flex; gap: 28px; }
+.footer-nav a {
+  font-size: 12px; font-weight: 500;
+  color: rgba(255,255,255,0.6);
+  text-decoration: none;
+  transition: color .2s ease;
+}
+.footer-nav a:hover { color: #fff; }
+
+/* ─── Responsive ─── */
+@media (max-width: 720px) {
+  .nav { padding: 0 20px; }
+  .nav-link { display: none; }
+  .intro { padding: 100px 24px 24px; }
+  .scene-overlay { padding: 0 24px 56px; }
+  .outro { padding: 80px 24px; gap: 28px; }
+  .footer { padding: 32px 24px; }
+  .footer-inner { flex-direction: column; align-items: flex-start; gap: 16px; }
+  .footer-left { flex-direction: column; align-items: flex-start; gap: 6px; }
+  .footer-nav { flex-wrap: wrap; gap: 16px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scene-media, .scene-overlay > * { transition: none; }
+  .scroll-hint-line, .cursor { animation: none; }
+}
+</style>
+</head>
+<body>
+
+<nav class="nav" id="nav">
+  <a class="brand-link" href="index.html"><div class="brand">REVANCE</div></a>
+  <div class="nav-right">
+    <a href="index.html" class="nav-link">Dashboard</a>
+    <a href="rewards.html" class="nav-link">Rewards</a>
+    <a href="purchase.html" class="nav-link">Products</a>
+    <a href="#" class="nav-link active">Experience</a>
+    <a href="numbers.html" class="nav-link">The Numbers</a>
+    <div class="nav-avatar" title="Dr. Jane Channel"></div>
+  </div>
+</nav>
+
+<!-- INTRO -->
+<section class="intro">
+  <p class="intro-eyebrow">The Experience</p>
+  <h1><span class="typed"></span><span class="cursor" id="cursor"></span></h1>
+  <div class="scroll-hint">
+    <span>Scroll to explore</span>
+    <span class="scroll-hint-line"></span>
+  </div>
+</section>
+
+<!-- FADE TO BLACK -->
+<div class="fade-section" id="fade-section"></div>
+
+<!-- SCENE 1 · Poise — three women at golden hour rooftop, arms raised -->
+<section class="scene" data-scene>
+  <div class="scene-media" style="background-image:url('https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?w=2400&q=85&auto=format&fit=crop')"></div>
+  <div class="scene-overlay">
+    <p class="scene-label">01 · Poise</p>
+    <h2 class="scene-title">Glow at every<br>gathering.</h2>
+    <p class="scene-caption">Walk into every room feeling like yourself — only softer, brighter, unmistakably at ease.</p>
+    <a class="scene-cta" href="index.html" data-scene-id="poise" data-scene-label="01 · Poise" data-scene-image="https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?w=2400&q=85&auto=format&fit=crop">
+      Make My Revance
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+    </a>
+  </div>
+</section>
+
+<!-- SCENE 2 · Freedom — woman hiking mountain valley with backpack -->
+<section class="scene" data-scene>
+  <div class="scene-media" style="background-image:url('https://images.unsplash.com/photo-1501555088652-021faa106b9b?w=2400&q=85&auto=format&fit=crop')"></div>
+  <div class="scene-overlay">
+    <p class="scene-label">02 · Freedom</p>
+    <h2 class="scene-title">Chase horizons,<br>not the mirror.</h2>
+    <p class="scene-caption">A natural look that moves with you. Climb, wander, return — your confidence doesn't stay behind.</p>
+    <a class="scene-cta" href="index.html" data-scene-id="freedom" data-scene-label="02 · Freedom" data-scene-image="https://images.unsplash.com/photo-1501555088652-021faa106b9b?w=2400&q=85&auto=format&fit=crop">
+      Make My Revance
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+    </a>
+  </div>
+</section>
+
+<!-- SCENE 3 · Presence — mother in floral dress with kids in a field -->
+<section class="scene" data-scene>
+  <div class="scene-media" style="background-image:url('https://images.unsplash.com/photo-1542037104857-ffbb0b9155fb?w=2400&q=85&auto=format&fit=crop')"></div>
+  <div class="scene-overlay">
+    <p class="scene-label">03 · Presence</p>
+    <h2 class="scene-title">Be here,<br>fully.</h2>
+    <p class="scene-caption">On playdates, in carpool, through every small moment — presence beats perfection, every time.</p>
+    <a class="scene-cta" href="index.html" data-scene-id="presence" data-scene-label="03 · Presence" data-scene-image="https://images.unsplash.com/photo-1542037104857-ffbb0b9155fb?w=2400&q=85&auto=format&fit=crop">
+      Make My Revance
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+    </a>
+  </div>
+</section>
+
+<!-- SCENE 4 · Radiance — close-up joyful laugh -->
+<section class="scene" data-scene>
+  <div class="scene-media" style="background-image:url('https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=2400&q=85&auto=format&fit=crop')"></div>
+  <div class="scene-overlay">
+    <p class="scene-label">04 · Radiance</p>
+    <h2 class="scene-title">Skin that<br>catches light.</h2>
+    <p class="scene-caption">The kind of natural glow people notice but can't quite name. Confidence you can feel the moment you smile.</p>
+    <a class="scene-cta" href="index.html" data-scene-id="radiance" data-scene-label="04 · Radiance" data-scene-image="https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=2400&q=85&auto=format&fit=crop">
+      Make My Revance
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+    </a>
+  </div>
+</section>
+
+<!-- SCENE 5 · Clarity — poised direct gaze, golden hour -->
+<section class="scene" data-scene>
+  <div class="scene-media" style="background-image:url('https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=2400&q=85&auto=format&fit=crop')"></div>
+  <div class="scene-overlay">
+    <p class="scene-label">05 · Clarity</p>
+    <h2 class="scene-title">Meet every eye<br>on your terms.</h2>
+    <p class="scene-caption">Into the room, into the camera, into yourself — and see exactly who's looking back.</p>
+    <a class="scene-cta" href="index.html" data-scene-id="clarity" data-scene-label="05 · Clarity" data-scene-image="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=2400&q=85&auto=format&fit=crop">
+      Make My Revance
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+    </a>
+  </div>
+</section>
+
+<!-- SCENE 6 · Grace — intimate, introspective portrait -->
+<section class="scene" data-scene>
+  <div class="scene-media" style="background-image:url('https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=2400&q=85&auto=format&fit=crop')"></div>
+  <div class="scene-overlay">
+    <p class="scene-label">06 · Grace</p>
+    <h2 class="scene-title">Soften into<br>yourself.</h2>
+    <p class="scene-caption">Not posed, not perfected — the quiet version of you the world leans toward. Natural beauty that still feels like you.</p>
+    <a class="scene-cta" href="index.html" data-scene-id="grace" data-scene-label="06 · Grace" data-scene-image="https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=2400&q=85&auto=format&fit=crop">
+      Make My Revance
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+    </a>
+  </div>
+</section>
+
+<!-- OUTRO -->
+<section class="outro">
+  <p class="outro-eyebrow">The Revance Promise</p>
+  <h2>Confidence that <em>moves</em><br>through every chapter.</h2>
+  <p class="outro-sub">One portfolio. Infinite moments. Your patients want a practice that treats the whole person.</p>
+  <a class="outro-cta" href="purchase.html">
+    Begin the Experience
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+  </a>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-left">
+      <span class="footer-brand">REVANCE</span>
+      <p class="footer-copy">© 2026 Revance Aesthetics. All rights reserved.</p>
+    </div>
+    <nav class="footer-nav">
+      <a href="rewards.html">Rewards</a>
+      <a href="purchase.html">Products</a>
+      <a href="experience.html">Experience</a>
+      <a href="#">Support</a>
+      <a href="#">Privacy</a>
+      <a href="#">Terms</a>
+    </nav>
+  </div>
+</footer>
+
+<script>
+// ─── Typewriter ───
+const phrase = 'What is your Revance Experience?';
+// Position of the word "your" in the phrase — renders in italic serif accent font
+const YOUR_START = 8, YOUR_END = 12;
+const typedEl = document.querySelector('.typed');
+const cursorEl = document.getElementById('cursor');
+let i = 0;
+function typeChar() {
+  if (i <= phrase.length) {
+    const current = phrase.slice(0, i);
+    const before  = current.slice(0, Math.min(i, YOUR_START));
+    const your    = current.slice(YOUR_START, Math.min(i, YOUR_END));
+    const after   = current.slice(YOUR_END);
+    typedEl.innerHTML = before +
+      (your ? '<em class="italic-accent">' + your + '</em>' : '') +
+      after;
+    i++;
+    const last = phrase[i - 1] || '';
+    let delay = 55 + Math.random() * 45;
+    if (last === '?' || last === '.') delay += 200;
+    if (last === ' ') delay += 40;
+    setTimeout(typeChar, delay);
+  } else {
+    setTimeout(() => cursorEl.classList.add('hidden'), 800);
+  }
+}
+window.addEventListener('load', () => setTimeout(typeChar, 700));
+
+// ─── Background transition (white → black) ───
+const fadeSection = document.getElementById('fade-section');
+const introEl = document.querySelector('.intro');
+const navEl = document.getElementById('nav');
+
+function updateBg() {
+  const scroll = window.scrollY;
+  const introEnd = introEl.offsetHeight;
+  const fadeEnd = introEnd + fadeSection.offsetHeight;
+
+  let val; // 1 = white, 0 = black
+  if (scroll < introEnd) val = 1;
+  else if (scroll > fadeEnd) val = 0;
+  else val = 1 - (scroll - introEnd) / fadeSection.offsetHeight;
+
+  const eased = Math.pow(val, 1.2); // ease for smoother feel
+  const gray = Math.round(eased * 255);
+  document.documentElement.style.setProperty('--bg', `rgb(${gray},${gray},${gray})`);
+  document.documentElement.style.setProperty('--fg', eased > 0.5 ? '#111' : '#fff');
+
+  // Nav dark mode flip
+  if (eased < 0.5) navEl.classList.add('dark');
+  else navEl.classList.remove('dark');
+}
+
+// ─── Scene reveal on intersect ───
+const sceneObserver = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) e.target.classList.add('in-view');
+  });
+}, { threshold: 0.25 });
+document.querySelectorAll('[data-scene]').forEach(s => sceneObserver.observe(s));
+
+// ─── Parallax ───
+const scenes = document.querySelectorAll('.scene');
+function parallax() {
+  scenes.forEach(scene => {
+    const rect = scene.getBoundingClientRect();
+    if (rect.bottom < 0 || rect.top > window.innerHeight) return;
+    const media = scene.querySelector('.scene-media');
+    const progress = (window.innerHeight - rect.top) / (window.innerHeight + rect.height);
+    const shift = (progress - 0.5) * 60; // -30px to +30px
+    if (scene.classList.contains('in-view')) {
+      media.style.backgroundPosition = `center calc(50% + ${shift}px)`;
+    }
+  });
+}
+
+// ─── "Make My Revance" — save choice and navigate ───
+document.querySelectorAll('.scene-cta').forEach(btn => {
+  btn.addEventListener('click', (e) => {
+    e.preventDefault();
+    const data = {
+      id:    btn.dataset.sceneId,
+      label: btn.dataset.sceneLabel,
+      image: btn.dataset.sceneImage
+    };
+    try {
+      localStorage.setItem('revanceExperience', JSON.stringify(data));
+    } catch (err) { /* localStorage blocked */ }
+    window.location.href = btn.getAttribute('href');
+  });
+});
+
+let ticking = false;
+function onScroll() {
+  if (!ticking) {
+    requestAnimationFrame(() => {
+      updateBg();
+      parallax();
+      ticking = false;
+    });
+    ticking = true;
+  }
+}
+window.addEventListener('scroll', onScroll, { passive: true });
+window.addEventListener('resize', updateBg);
+updateBg();
+</script>
+</body>
+</html>

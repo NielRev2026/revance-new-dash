@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>New Dash — Revance</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+html, body {
+  background: #fff;
+  color: #111;
+  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+/* ─── NAV ─── */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0;
+  height: 64px;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 40px;
+  background: rgba(255,255,255,0.72);
+  backdrop-filter: saturate(180%) blur(24px);
+  -webkit-backdrop-filter: saturate(180%) blur(24px);
+  border-bottom: 1px solid rgba(0,0,0,0.04);
+  z-index: 100;
+}
+.brand { font-size: 14px; font-weight: 600; letter-spacing: 3px; color: #111; }
+.nav-right { display: flex; align-items: center; gap: 32px; }
+.nav-link { font-size: 13px; font-weight: 500; color: #666; text-decoration: none; transition: color .2s ease; }
+.nav-link:hover { color: #111; }
+.nav-avatar {
+  width: 32px; height: 32px;
+  background: linear-gradient(135deg, #FFB088, #FF7A9C);
+  box-shadow: 0 2px 8px rgba(255,122,156,0.25);
+}
+
+/* ─── HERO ─── */
+.hero {
+  padding: 140px 64px 48px;
+  max-width: 1520px;
+  margin: 0 auto;
+  position: relative;
+  min-height: calc(88vh - 40px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.hero.personalized {
+  max-width: none;
+  padding: 140px 0 48px;
+  background-size: cover;
+  background-position: center;
+  min-height: calc(88vh - 40px);
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  margin: 0;
+  overflow: hidden;
+  animation: heroReveal 1.2s cubic-bezier(.16,1,.3,1);
+}
+.hero.personalized::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.45) 50%, rgba(0,0,0,0.78) 100%);
+  z-index: 1;
+  animation: fadeIn 1.4s ease;
+}
+.hero.personalized .hero-inner {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 1520px;
+  margin: 0 auto;
+  padding: 0 64px;
+}
+.hero.personalized .greeting { color: #fff; }
+.hero.personalized .subtitle { color: rgba(255,255,255,0.85); }
+.hero.personalized .cursor { background: #fff; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes heroReveal { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+.hero-chip {
+  position: absolute;
+  top: 96px;
+  right: 64px;
+  z-index: 3;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 14px;
+  background: rgba(255,255,255,0.14);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.25);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: background .2s ease;
+}
+.hero-chip:hover { background: rgba(255,255,255,0.22); }
+.hero-chip .chip-x {
+  display: inline-grid;
+  place-items: center;
+  width: 16px; height: 16px;
+  background: rgba(255,255,255,0.18);
+}
+.hero-chip .chip-x svg { width: 10px; height: 10px; stroke: #fff; }
+.greeting {
+  font-size: clamp(48px, 8.6vw, 128px);
+  font-weight: 200;
+  letter-spacing: -4px;
+  line-height: 1.02;
+  color: #111;
+  margin-bottom: 28px;
+  min-height: 1.1em;
+}
+.typed { display: inline; }
+.cursor {
+  display: inline-block;
+  width: 3px;
+  height: 0.86em;
+  background: #111;
+  margin-left: 4px;
+  vertical-align: -0.08em;
+  animation: blink 1.05s steps(2, end) infinite;
+}
+@keyframes blink { 0%, 50% { opacity: 1; } 50.01%, 100% { opacity: 0; } }
+.cursor.hidden { display: none; }
+
+.subtitle {
+  font-size: clamp(20px, 2.2vw, 30px);
+  font-weight: 300;
+  color: #707070;
+  letter-spacing: -0.5px;
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 1s ease, transform 1s cubic-bezier(.16,1,.3,1);
+}
+.subtitle.show { opacity: 1; transform: none; }
+
+/* ─── TILES ─── */
+.tiles-wrap {
+  padding: 40px 64px 120px;
+  max-width: 1520px;
+  margin: 0 auto;
+}
+.tiles {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+.tile {
+  position: relative;
+  aspect-ratio: 1 / 1.08;
+  min-height: 420px;
+  max-height: 520px;
+  overflow: hidden;
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(56px) scale(0.98);
+  transition: opacity 1s cubic-bezier(.16,1,.3,1), transform 1s cubic-bezier(.16,1,.3,1), box-shadow .5s ease;
+  background: #f7f7f7;
+  isolation: isolate;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+}
+.tile.show { opacity: 1; transform: none; }
+.tile:hover { box-shadow: 0 20px 60px rgba(0,0,0,0.12); }
+
+/* Gradient canvas */
+.tile-bg {
+  position: absolute;
+  inset: -4%;
+  z-index: 0;
+  transition: transform 1.2s cubic-bezier(.16,1,.3,1);
+}
+.tile:hover .tile-bg { transform: scale(1.08); }
+
+/* Pulsing highlight overlay */
+.tile-bg::before {
+  content: '';
+  position: absolute;
+  width: 60%;
+  height: 60%;
+  left: 20%;
+  top: 20%;
+  background: radial-gradient(circle, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0) 55%);
+  filter: blur(10px);
+  animation: pulseLight 7s ease-in-out infinite;
+}
+@keyframes pulseLight {
+  0%   { transform: translate(-14%, -10%) scale(1);   opacity: 0.55; }
+  50%  { transform: translate(14%, 12%)  scale(1.25); opacity: 0.85; }
+  100% { transform: translate(-14%, -10%) scale(1);   opacity: 0.55; }
+}
+
+/* ─ Tile 1 — Rewards (peach → rose → cream) ─ */
+.bg-rewards {
+  background:
+    radial-gradient(circle at 22% 28%, #FFB088 0%, transparent 52%),
+    radial-gradient(circle at 78% 72%, #FF7A9C 0%, transparent 55%),
+    radial-gradient(circle at 55% 52%, #FFD194 0%, transparent 48%),
+    linear-gradient(135deg, #FFE8D6 0%, #FF9EB5 100%);
+  background-size: 140% 140%, 140% 140%, 160% 160%, 100% 100%;
+  animation: flow1 15s ease-in-out infinite alternate;
+}
+@keyframes flow1 {
+  0%   { background-position: 0% 0%, 100% 100%, 50% 50%, 0% 0%; filter: hue-rotate(0deg) saturate(1); }
+  50%  { background-position: 60% 40%, 40% 60%, 20% 80%, 50% 50%; filter: hue-rotate(8deg) saturate(1.08); }
+  100% { background-position: 100% 60%, 0% 40%, 80% 20%, 100% 100%; filter: hue-rotate(-6deg) saturate(1); }
+}
+
+/* ─ Tile 2 — Products (sky → periwinkle → lavender) ─ */
+.bg-products {
+  background:
+    radial-gradient(circle at 28% 72%, #8EC5FC 0%, transparent 55%),
+    radial-gradient(circle at 72% 28%, #667eea 0%, transparent 58%),
+    radial-gradient(circle at 50% 50%, #E0C3FC 0%, transparent 50%),
+    linear-gradient(135deg, #C9E6FF 0%, #8B7FDF 100%);
+  background-size: 140% 140%, 140% 140%, 160% 160%, 100% 100%;
+  animation: flow2 17s ease-in-out infinite alternate;
+}
+@keyframes flow2 {
+  0%   { background-position: 0% 100%, 100% 0%, 50% 50%, 0% 0%; filter: hue-rotate(0deg) saturate(1); }
+  50%  { background-position: 50% 50%, 50% 50%, 30% 70%, 50% 50%; filter: hue-rotate(10deg) saturate(1.1); }
+  100% { background-position: 100% 0%, 0% 100%, 70% 30%, 100% 100%; filter: hue-rotate(-8deg) saturate(1); }
+}
+
+/* ─ Tile 3 — Patients (mint → ocean → lime) ─ */
+.bg-patients {
+  background:
+    radial-gradient(circle at 22% 78%, #A8E6CF 0%, transparent 55%),
+    radial-gradient(circle at 78% 22%, #56CCF2 0%, transparent 58%),
+    radial-gradient(circle at 55% 52%, #D4FC79 0%, transparent 48%),
+    linear-gradient(135deg, #E8FBDC 0%, #6FCF97 100%);
+  background-size: 140% 140%, 140% 140%, 160% 160%, 100% 100%;
+  animation: flow3 19s ease-in-out infinite alternate;
+}
+@keyframes flow3 {
+  0%   { background-position: 0% 100%, 100% 0%, 50% 50%, 0% 0%; filter: hue-rotate(0deg) saturate(1); }
+  50%  { background-position: 40% 60%, 60% 40%, 70% 30%, 50% 50%; filter: hue-rotate(-6deg) saturate(1.08); }
+  100% { background-position: 100% 60%, 0% 40%, 20% 80%, 100% 100%; filter: hue-rotate(10deg) saturate(1); }
+}
+
+/* Tile content */
+.tile-inner {
+  position: relative;
+  z-index: 1;
+  padding: 40px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.tile-kicker {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 2.4px;
+  color: rgba(0,0,0,0.55);
+  text-transform: uppercase;
+}
+.tile-title {
+  font-size: clamp(32px, 3.6vw, 56px);
+  font-weight: 600;
+  letter-spacing: -2px;
+  line-height: 0.98;
+  color: #111;
+  max-width: 90%;
+}
+.tile-arrow {
+  position: absolute;
+  bottom: 32px; right: 32px;
+  width: 56px; height: 56px;
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  display: grid;
+  place-items: center;
+  transform: translateX(-12px);
+  opacity: 0;
+  transition: opacity .35s ease, transform .5s cubic-bezier(.16,1,.3,1);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+}
+.tile-arrow svg { width: 20px; height: 20px; stroke: #111; }
+.tile:hover .tile-arrow { opacity: 1; transform: translateX(0); }
+
+/* ─── FOOTER ─── */
+.footer {
+  padding: 48px 64px;
+  border-top: 1px solid #eaeaea;
+  margin-top: 40px;
+}
+.footer-inner {
+  max-width: 1520px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 32px;
+  flex-wrap: wrap;
+}
+.footer-left { display: flex; align-items: center; gap: 24px; }
+.footer-brand { font-size: 12px; font-weight: 600; letter-spacing: 2px; color: #111; }
+.footer-copy { font-size: 12px; font-weight: 400; color: #999; letter-spacing: 0.3px; }
+.footer-nav { display: flex; align-items: center; gap: 28px; }
+.footer-nav a {
+  font-size: 12px; font-weight: 500;
+  color: #666; text-decoration: none;
+  letter-spacing: 0.3px;
+  transition: color .2s ease;
+}
+.footer-nav a:hover { color: #111; }
+
+/* ─── Responsive ─── */
+@media (max-width: 1024px) {
+  .hero { padding: 140px 40px 60px; }
+  .tiles-wrap { padding: 40px 40px 100px; }
+  .tiles { gap: 16px; }
+}
+@media (max-width: 720px) {
+  .nav { padding: 0 20px; }
+  .nav-link { display: none; }
+  .hero { padding: 120px 24px 40px; }
+  .tiles-wrap { padding: 24px 24px 60px; }
+  .tiles { grid-template-columns: 1fr; }
+  .tile { aspect-ratio: 1.4 / 1; min-height: 320px; }
+  .tile-inner { padding: 28px; }
+  .footer { padding: 32px 24px; }
+  .footer-inner { flex-direction: column; align-items: flex-start; gap: 16px; }
+  .footer-left { flex-direction: column; align-items: flex-start; gap: 6px; }
+  .footer-nav { flex-wrap: wrap; gap: 16px; }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .bg-rewards, .bg-products, .bg-patients,
+  .tile-bg::before,
+  .cursor { animation: none !important; }
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="brand">REVANCE</div>
+  <div class="nav-right">
+    <a href="index.html" class="nav-link">Dashboard</a>
+    <a href="rewards.html" class="nav-link">Rewards</a>
+    <a href="purchase.html" class="nav-link">Products</a>
+    <a href="experience.html" class="nav-link">Experience</a>
+    <a href="numbers.html" class="nav-link">The Numbers</a>
+    <div class="nav-avatar" title="Dr. Jane Channel"></div>
+  </div>
+</nav>
+
+<section class="hero">
+  <h1 class="greeting"><span class="typed"></span><span class="cursor" id="cursor"></span></h1>
+  <p class="subtitle" id="subtitle">Where would you like to start today?</p>
+</section>
+
+<section class="tiles-wrap">
+  <div class="tiles">
+
+    <a class="tile" data-i="0" href="rewards.html" style="text-decoration:none;color:inherit;display:block;">
+      <div class="tile-bg bg-rewards"></div>
+      <div class="tile-inner">
+        <div class="tile-kicker">01 / Rewards</div>
+        <h2 class="tile-title">Manage<br>Rewards</h2>
+      </div>
+      <div class="tile-arrow"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></div>
+    </a>
+
+    <a class="tile" data-i="1" href="purchase.html" style="text-decoration:none;color:inherit;display:block;">
+      <div class="tile-bg bg-products"></div>
+      <div class="tile-inner">
+        <div class="tile-kicker">02 / Shop</div>
+        <h2 class="tile-title">Purchase<br>Products</h2>
+      </div>
+      <div class="tile-arrow"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></div>
+    </a>
+
+    <a class="tile" data-i="2" href="checkin.html" style="text-decoration:none;color:inherit;display:block;">
+      <div class="tile-bg bg-patients"></div>
+      <div class="tile-inner">
+        <div class="tile-kicker">03 / Patients</div>
+        <h2 class="tile-title">Check In<br>Patients</h2>
+      </div>
+      <div class="tile-arrow"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></div>
+    </a>
+
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-left">
+      <span class="footer-brand">REVANCE</span>
+      <p class="footer-copy">© 2026 Revance Aesthetics. All rights reserved.</p>
+    </div>
+    <nav class="footer-nav">
+      <a href="rewards.html">Rewards</a>
+      <a href="purchase.html">Products</a>
+      <a href="#">Support</a>
+      <a href="#">Privacy</a>
+      <a href="#">Terms</a>
+    </nav>
+  </div>
+</footer>
+
+<script>
+// ─── Apply stored Revance Experience personalization ───
+(function applyExperience() {
+  let data;
+  try { data = JSON.parse(localStorage.getItem('revanceExperience') || 'null'); } catch (e) {}
+  if (!data || !data.image) return;
+  const hero = document.querySelector('.hero');
+  if (!hero) return;
+
+  // Wrap existing hero children in an inner div so background + overlay can sit behind
+  const inner = document.createElement('div');
+  inner.className = 'hero-inner';
+  while (hero.firstChild) inner.appendChild(hero.firstChild);
+  hero.appendChild(inner);
+  hero.classList.add('personalized');
+  hero.style.backgroundImage = `url('${data.image}')`;
+
+  // Chip showing current choice + small X to reset
+  const chip = document.createElement('a');
+  chip.href = 'experience.html';
+  chip.className = 'hero-chip';
+  chip.innerHTML = data.label +
+    '<span class="chip-x" title="Reset experience">' +
+    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>' +
+    '</span>';
+  chip.addEventListener('click', (e) => {
+    if (e.target.closest('.chip-x')) {
+      e.preventDefault();
+      localStorage.removeItem('revanceExperience');
+      location.reload();
+    }
+  });
+  hero.appendChild(chip);
+})();
+
+const phrase = 'Welcome, Dr. Jane Channel';
+const typedEl = document.querySelector('.typed');
+const cursorEl = document.getElementById('cursor');
+const subtitle = document.getElementById('subtitle');
+const tiles = document.querySelectorAll('.tile');
+
+// Type-on effect with subtle natural rhythm
+let i = 0;
+function typeChar() {
+  if (i <= phrase.length) {
+    typedEl.textContent = phrase.slice(0, i);
+    i++;
+    // Vary speed — slow on commas, fast on common letters
+    const last = phrase[i - 1] || '';
+    let delay = 55 + Math.random() * 40;
+    if (last === ',' || last === '.') delay += 220;
+    if (last === ' ') delay += 40;
+    setTimeout(typeChar, delay);
+  } else {
+    // Typing done — hide cursor and reveal subtitle
+    setTimeout(() => {
+      cursorEl.classList.add('hidden');
+      subtitle.classList.add('show');
+    }, 320);
+  }
+}
+
+window.addEventListener('load', () => {
+  // Start typing
+  setTimeout(typeChar, 500);
+  // Tiles fade in during typing — don't wait for it to finish
+  tiles.forEach((tile, idx) => {
+    setTimeout(() => tile.classList.add('show'), 700 + idx * 140);
+  });
+});
+</script>
+</body>
+</html>

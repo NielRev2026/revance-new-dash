@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Check In — Revance</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700&family=Playfair+Display:ital,wght@1,400&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;}
+html,body{background:#fff;color:#111;font-family:'Poppins',-apple-system,BlinkMacSystemFont,sans-serif;overflow-x:hidden;min-height:100vh;}
+
+/* NAV */
+.nav{position:fixed;top:0;left:0;right:0;height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 40px;background:rgba(255,255,255,0.72);backdrop-filter:saturate(180%) blur(24px);-webkit-backdrop-filter:saturate(180%) blur(24px);border-bottom:1px solid rgba(0,0,0,0.04);z-index:100;}
+.brand-link{text-decoration:none;}
+.brand{font-size:14px;font-weight:600;letter-spacing:3px;color:#111;}
+.nav-right{display:flex;align-items:center;gap:32px;}
+.nav-link{font-size:13px;font-weight:500;color:#666;text-decoration:none;transition:color .2s ease;}
+.nav-link:hover,.nav-link.active{color:#111;}
+.nav-avatar{width:32px;height:32px;background:linear-gradient(135deg,#FFB088,#FF7A9C);box-shadow:0 2px 8px rgba(255,122,156,0.25);}
+
+/* BACK */
+.back-row{padding:100px 64px 0;max-width:1520px;margin:0 auto;}
+.back-link{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:500;letter-spacing:1px;text-transform:uppercase;color:#707070;text-decoration:none;transition:color .2s ease,gap .25s ease;}
+.back-link:hover{color:#111;gap:12px;}
+.back-link svg{width:14px;height:14px;}
+
+/* HERO + FORM */
+.stage{min-height:calc(88vh - 40px);max-width:1520px;margin:0 auto;padding:48px 64px 80px;display:flex;flex-direction:column;justify-content:center;}
+.eyebrow{font-size:11px;font-weight:600;letter-spacing:2.4px;color:#999;text-transform:uppercase;margin-bottom:18px;opacity:0;transform:translateY(12px);animation:fadeUp .8s cubic-bezier(.16,1,.3,1) forwards;}
+.stage-title{font-size:clamp(44px,6.4vw,96px);font-weight:200;letter-spacing:-3px;line-height:1.02;color:#111;max-width:1200px;opacity:0;transform:translateY(20px);animation:fadeUp .9s .1s cubic-bezier(.16,1,.3,1) forwards;}
+.stage-title em{font-family:'Playfair Display',Georgia,serif;font-style:italic;font-weight:400;}
+.stage-sub{font-size:clamp(17px,1.7vw,22px);font-weight:300;color:#707070;letter-spacing:-0.2px;margin-top:20px;max-width:680px;opacity:0;transform:translateY(16px);animation:fadeUp .9s .2s cubic-bezier(.16,1,.3,1) forwards;}
+@keyframes fadeUp{to{opacity:1;transform:none;}}
+
+/* GIANT INPUT */
+.form-wrap{margin-top:72px;max-width:1200px;opacity:0;transform:translateY(20px);animation:fadeUp 1s .35s cubic-bezier(.16,1,.3,1) forwards;}
+.form-label{font-size:11px;font-weight:600;letter-spacing:2.4px;color:#999;text-transform:uppercase;margin-bottom:18px;}
+.input-row{position:relative;display:flex;align-items:flex-end;gap:24px;}
+.phone-input{
+  flex:1;min-width:0;
+  font-family:'Poppins',sans-serif;
+  font-size:clamp(48px,7vw,108px);
+  font-weight:200;
+  letter-spacing:-3px;
+  color:#111;
+  background:none;border:none;outline:none;
+  padding:24px 0 20px;
+  font-variant-numeric:tabular-nums;
+  width:100%;
+}
+.phone-input::placeholder{color:#d0d0d0;font-weight:200;}
+/* Animated gradient underline */
+.input-underline{position:absolute;left:0;right:0;bottom:0;height:2px;background:#eaeaea;overflow:hidden;}
+.input-underline::after{
+  content:'';
+  position:absolute;left:0;top:0;height:100%;width:100%;
+  background:linear-gradient(90deg,#A8E6CF 0%,#56CCF2 50%,#D4FC79 100%);
+  transform:translateX(-101%);
+  transition:transform .8s cubic-bezier(.16,1,.3,1);
+}
+.input-row.focused .input-underline::after{transform:translateX(0);}
+
+.submit-btn{
+  flex-shrink:0;
+  height:88px;padding:0 32px;
+  background:#111;color:#fff;
+  font-family:inherit;font-size:14px;font-weight:500;letter-spacing:0.5px;
+  border:none;cursor:pointer;
+  display:inline-flex;align-items:center;gap:12px;
+  transition:gap .25s ease,background .2s ease,opacity .2s ease;
+}
+.submit-btn svg{width:16px;height:16px;}
+.submit-btn:hover:not(:disabled){gap:16px;background:#000;}
+.submit-btn:disabled{background:#eaeaea;color:#aaa;cursor:not-allowed;}
+
+.form-helper{margin-top:20px;display:flex;align-items:center;gap:32px;flex-wrap:wrap;}
+.helper-text{font-size:13px;color:#888;letter-spacing:0.2px;}
+.helper-link{font-size:13px;font-weight:500;color:#111;text-decoration:none;letter-spacing:0.2px;border-bottom:1px solid #111;padding-bottom:1px;transition:color .2s ease,border-color .2s ease;}
+.helper-link:hover{color:#56CCF2;border-color:#56CCF2;}
+
+/* QUICK ACTIONS BAR */
+.recent-row{margin-top:96px;padding-top:32px;border-top:1px solid #eaeaea;max-width:1200px;}
+.recent-label{font-size:11px;font-weight:600;letter-spacing:2.4px;color:#999;text-transform:uppercase;margin-bottom:20px;}
+.recent-list{display:flex;flex-wrap:wrap;gap:12px;}
+.recent-chip{
+  display:inline-flex;align-items:center;gap:10px;
+  padding:10px 16px;
+  background:#f7f7f7;
+  font-size:13px;font-weight:500;color:#333;
+  cursor:pointer;border:none;font-family:inherit;
+  transition:background .2s ease,color .2s ease;
+}
+.recent-chip:hover{background:#111;color:#fff;}
+.recent-chip .chip-dot{width:6px;height:6px;background:#56CCF2;}
+
+/* SUCCESS STATE */
+.success{
+  position:fixed;inset:0;background:#fff;z-index:200;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:40px;text-align:center;
+  opacity:0;pointer-events:none;
+  transition:opacity .5s ease;
+}
+.success.show{opacity:1;pointer-events:auto;}
+.success-icon{
+  width:96px;height:96px;
+  background:linear-gradient(135deg,#A8E6CF,#56CCF2);
+  display:grid;place-items:center;
+  margin-bottom:32px;
+}
+.success-icon svg{width:48px;height:48px;stroke:#fff;}
+.success h2{
+  font-size:clamp(36px,5vw,72px);font-weight:200;letter-spacing:-2.5px;color:#111;line-height:1;margin-bottom:20px;
+}
+.success h2 em{font-family:'Playfair Display',Georgia,serif;font-style:italic;font-weight:400;}
+.success p{font-size:18px;font-weight:300;color:#707070;max-width:480px;margin-bottom:40px;line-height:1.5;}
+.success-actions{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;}
+.success-primary,.success-secondary{
+  display:inline-flex;align-items:center;gap:10px;
+  padding:16px 24px;
+  font-family:inherit;font-size:13px;font-weight:500;letter-spacing:0.5px;
+  text-decoration:none;cursor:pointer;border:none;
+  transition:gap .25s ease,background .2s ease;
+}
+.success-primary{background:#111;color:#fff;}
+.success-primary:hover{gap:14px;background:#000;}
+.success-secondary{background:#f5f5f5;color:#111;}
+.success-secondary:hover{background:#eaeaea;}
+.success-primary svg,.success-secondary svg{width:14px;height:14px;}
+
+/* FOOTER */
+.footer{padding:48px 64px;border-top:1px solid #eaeaea;}
+.footer-inner{max-width:1520px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;gap:32px;flex-wrap:wrap;}
+.footer-left{display:flex;align-items:center;gap:24px;}
+.footer-brand{font-size:12px;font-weight:600;letter-spacing:2px;color:#111;}
+.footer-copy{font-size:12px;color:#999;letter-spacing:0.3px;}
+.footer-nav{display:flex;gap:28px;}
+.footer-nav a{font-size:12px;font-weight:500;color:#666;text-decoration:none;transition:color .2s ease;}
+.footer-nav a:hover{color:#111;}
+
+/* RESPONSIVE */
+@media (max-width:1024px){
+  .back-row,.stage,.footer{padding-left:40px;padding-right:40px;}
+}
+@media (max-width:720px){
+  .nav{padding:0 20px;}
+  .nav-link{display:none;}
+  .back-row,.stage,.footer{padding-left:20px;padding-right:20px;}
+  .input-row{flex-direction:column;align-items:stretch;gap:16px;}
+  .submit-btn{height:64px;}
+  .recent-row{margin-top:56px;}
+  .footer-inner{flex-direction:column;align-items:flex-start;gap:16px;}
+  .footer-left{flex-direction:column;align-items:flex-start;gap:6px;}
+  .footer-nav{flex-wrap:wrap;gap:16px;}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a class="brand-link" href="index.html"><div class="brand">REVANCE</div></a>
+  <div class="nav-right">
+    <a href="index.html" class="nav-link">Dashboard</a>
+    <a href="rewards.html" class="nav-link">Rewards</a>
+    <a href="purchase.html" class="nav-link">Products</a>
+    <a href="experience.html" class="nav-link">Experience</a>
+    <a href="numbers.html" class="nav-link">The Numbers</a>
+    <div class="nav-avatar" title="Dr. Jane Channel"></div>
+  </div>
+</nav>
+
+<div class="back-row">
+  <a class="back-link" href="index.html">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+    Dashboard
+  </a>
+</div>
+
+<main class="stage">
+
+  <p class="eyebrow">Check In</p>
+  <h1 class="stage-title">Who's <em>visiting</em><br>today?</h1>
+  <p class="stage-sub">One number and we'll pull their chart, queue their appointment, and apply any rewards on file.</p>
+
+  <form class="form-wrap" id="checkin-form" novalidate>
+    <p class="form-label">Patient Phone Number</p>
+    <div class="input-row" id="input-row">
+      <input
+        id="phone"
+        class="phone-input"
+        type="tel"
+        inputmode="numeric"
+        autocomplete="off"
+        placeholder="(555) 000 · 0000"
+        aria-label="Enter patient's phone number"
+        maxlength="16"
+      >
+      <button type="submit" class="submit-btn" id="submit" disabled>
+        Check In
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+      </button>
+      <div class="input-underline"></div>
+    </div>
+    <div class="form-helper">
+      <span class="helper-text">Press Enter to search your patient records.</span>
+      <a href="#" class="helper-link">Add a new patient</a>
+    </div>
+  </form>
+
+  <div class="recent-row">
+    <p class="recent-label">Recent Check-Ins</p>
+    <div class="recent-list">
+      <button class="recent-chip" data-phone="(214) 555-0147"><span class="chip-dot"></span>Marcus Reid · (214) 555-0147</button>
+      <button class="recent-chip" data-phone="(469) 220-8431"><span class="chip-dot"></span>Sofia Ramirez · (469) 220-8431</button>
+      <button class="recent-chip" data-phone="(512) 705-3900"><span class="chip-dot"></span>Ava Chen · (512) 705-3900</button>
+      <button class="recent-chip" data-phone="(832) 416-2278"><span class="chip-dot"></span>Priya Nair · (832) 416-2278</button>
+    </div>
+  </div>
+
+</main>
+
+<!-- SUCCESS STATE -->
+<div class="success" id="success">
+  <div class="success-icon">
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg>
+  </div>
+  <h2><em>Welcome</em> back.</h2>
+  <p id="success-msg">We matched the number to a patient on file and queued them for their 2:30 PM appointment with Dr. Channel.</p>
+  <div class="success-actions">
+    <a href="index.html" class="success-primary">
+      Back to Dashboard
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+    </a>
+    <button class="success-secondary" id="check-another">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 4v6h6M3.5 15a9 9 0 1 0 2.1-9.4L1 10"/></svg>
+      Check in another
+    </button>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-left">
+      <span class="footer-brand">REVANCE</span>
+      <p class="footer-copy">© 2026 Revance Aesthetics. Demo patient data is fictional.</p>
+    </div>
+    <nav class="footer-nav">
+      <a href="rewards.html">Rewards</a>
+      <a href="purchase.html">Products</a>
+      <a href="experience.html">Experience</a>
+      <a href="numbers.html">The Numbers</a>
+      <a href="#">Support</a>
+      <a href="#">Privacy</a>
+      <a href="#">Terms</a>
+    </nav>
+  </div>
+</footer>
+
+<script>
+const phone = document.getElementById('phone');
+const submit = document.getElementById('submit');
+const row = document.getElementById('input-row');
+const form = document.getElementById('checkin-form');
+const success = document.getElementById('success');
+const successMsg = document.getElementById('success-msg');
+const checkAnother = document.getElementById('check-another');
+
+// Format as user types: (XXX) XXX · XXXX
+function format(v) {
+  const d = v.replace(/\D/g,'').slice(0, 10);
+  if (d.length === 0) return '';
+  if (d.length <= 3) return '(' + d;
+  if (d.length <= 6) return '(' + d.slice(0,3) + ') ' + d.slice(3);
+  return '(' + d.slice(0,3) + ') ' + d.slice(3,6) + ' · ' + d.slice(6);
+}
+
+phone.addEventListener('input', () => {
+  const digits = phone.value.replace(/\D/g,'').length;
+  phone.value = format(phone.value);
+  submit.disabled = digits < 10;
+});
+
+phone.addEventListener('focus', () => row.classList.add('focused'));
+phone.addEventListener('blur',  () => row.classList.remove('focused'));
+
+// Recent chip clicks populate input + focus
+document.querySelectorAll('.recent-chip').forEach(chip => {
+  chip.addEventListener('click', () => {
+    phone.value = chip.dataset.phone.replace('-', ' · ');
+    phone.dispatchEvent(new Event('input'));
+    phone.focus();
+  });
+});
+
+// Submit
+form.addEventListener('submit', (e) => {
+  e.preventDefault();
+  if (submit.disabled) return;
+  // Demo: show success state
+  successMsg.textContent = 'We matched ' + phone.value + ' to a patient on file and queued them for their 2:30 PM appointment with Dr. Channel.';
+  success.classList.add('show');
+  document.body.style.overflow = 'hidden';
+});
+
+checkAnother.addEventListener('click', () => {
+  success.classList.remove('show');
+  document.body.style.overflow = '';
+  phone.value = '';
+  submit.disabled = true;
+  phone.focus();
+});
+
+// Autofocus input on load (respecting keyboard users)
+window.addEventListener('load', () => setTimeout(() => phone.focus(), 1200));
+</script>
+</body>
+</html>

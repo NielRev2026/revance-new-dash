@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Purchase Products — Revance</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+html, body {
+  background: #fff;
+  color: #111;
+  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+/* ─── NAV ─── */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0;
+  height: 64px;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 40px;
+  background: rgba(255,255,255,0.72);
+  backdrop-filter: saturate(180%) blur(24px);
+  -webkit-backdrop-filter: saturate(180%) blur(24px);
+  border-bottom: 1px solid rgba(0,0,0,0.04);
+  z-index: 100;
+}
+.brand-link { text-decoration: none; }
+.brand { font-size: 14px; font-weight: 600; letter-spacing: 3px; color: #111; }
+.nav-right { display: flex; align-items: center; gap: 32px; }
+.nav-link { font-size: 13px; font-weight: 500; color: #666; text-decoration: none; transition: color .2s ease; }
+.nav-link:hover, .nav-link.active { color: #111; }
+.nav-cart {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 13px; font-weight: 500; color: #111;
+  text-decoration: none;
+}
+.nav-cart .dot {
+  width: 8px; height: 8px; background: #667eea;
+  display: inline-block;
+}
+.nav-avatar {
+  width: 32px; height: 32px;
+  background: linear-gradient(135deg, #FFB088, #FF7A9C);
+  box-shadow: 0 2px 8px rgba(255,122,156,0.25);
+}
+
+/* ─── BACK ─── */
+.back-row {
+  padding: 100px 64px 0;
+  max-width: 1520px;
+  margin: 0 auto;
+}
+.back-link {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 12px; font-weight: 500; letter-spacing: 1px;
+  text-transform: uppercase; color: #707070;
+  text-decoration: none;
+  transition: color .2s ease, gap .25s ease;
+}
+.back-link:hover { color: #111; gap: 12px; }
+.back-link svg { width: 14px; height: 14px; }
+
+/* ─── HERO ─── */
+.hero {
+  padding: 40px 64px 32px;
+  max-width: 1520px;
+  margin: 0 auto;
+}
+.eyebrow {
+  font-size: 11px; font-weight: 600; letter-spacing: 2.4px;
+  color: #999; text-transform: uppercase;
+  margin-bottom: 18px;
+  opacity: 0; transform: translateY(12px);
+  animation: fadeUp .8s cubic-bezier(.16,1,.3,1) forwards;
+}
+.hero-title {
+  font-size: clamp(48px, 7vw, 112px);
+  font-weight: 200;
+  letter-spacing: -4px;
+  line-height: 1;
+  color: #111;
+  margin-bottom: 24px;
+  opacity: 0; transform: translateY(20px);
+  animation: fadeUp .9s .1s cubic-bezier(.16,1,.3,1) forwards;
+}
+.hero-sub {
+  font-size: clamp(18px, 1.9vw, 24px);
+  font-weight: 300;
+  color: #707070;
+  letter-spacing: -0.3px;
+  max-width: 720px;
+  opacity: 0; transform: translateY(16px);
+  animation: fadeUp .9s .2s cubic-bezier(.16,1,.3,1) forwards;
+}
+@keyframes fadeUp { to { opacity: 1; transform: none; } }
+
+/* ─── FEATURED PRODUCT ─── */
+.featured-wrap {
+  padding: 48px 64px;
+  max-width: 1520px;
+  margin: 0 auto;
+}
+.featured {
+  position: relative;
+  min-height: 520px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  overflow: hidden;
+  isolation: isolate;
+  opacity: 0; transform: translateY(24px);
+  animation: fadeUp 1s .3s cubic-bezier(.16,1,.3,1) forwards;
+}
+.featured::before {
+  content: '';
+  position: absolute; inset: 0; z-index: -1;
+  background:
+    radial-gradient(circle at 28% 72%, #8EC5FC 0%, transparent 55%),
+    radial-gradient(circle at 72% 28%, #667eea 0%, transparent 58%),
+    radial-gradient(circle at 50% 50%, #E0C3FC 0%, transparent 50%),
+    linear-gradient(135deg, #C9E6FF 0%, #8B7FDF 100%);
+  background-size: 140% 140%, 140% 140%, 160% 160%, 100% 100%;
+  animation: flow 17s ease-in-out infinite alternate;
+}
+.featured::after {
+  content: '';
+  position: absolute;
+  width: 60%; height: 60%; left: 20%; top: 20%;
+  background: radial-gradient(circle, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0) 55%);
+  filter: blur(10px); z-index: -1;
+  animation: pulseLight 7s ease-in-out infinite;
+}
+@keyframes flow {
+  0%   { background-position: 0% 100%, 100% 0%, 50% 50%, 0% 0%; filter: hue-rotate(0deg); }
+  50%  { background-position: 50% 50%, 50% 50%, 30% 70%, 50% 50%; filter: hue-rotate(10deg); }
+  100% { background-position: 100% 0%, 0% 100%, 70% 30%, 100% 100%; filter: hue-rotate(-8deg); }
+}
+@keyframes pulseLight {
+  0%   { transform: translate(-14%, -10%) scale(1);   opacity: 0.5; }
+  50%  { transform: translate(14%, 12%)  scale(1.25); opacity: 0.8; }
+  100% { transform: translate(-14%, -10%) scale(1);   opacity: 0.5; }
+}
+.feat-left {
+  padding: 56px;
+  display: flex; flex-direction: column; justify-content: space-between;
+  min-height: 520px;
+}
+.feat-kicker {
+  font-size: 11px; font-weight: 600; letter-spacing: 2.4px;
+  color: rgba(0,0,0,0.55); text-transform: uppercase;
+}
+.feat-title {
+  font-size: clamp(48px, 6vw, 92px);
+  font-weight: 600;
+  letter-spacing: -3px;
+  line-height: 0.96;
+  color: #111;
+  margin: 20px 0 12px;
+}
+.feat-desc {
+  font-size: 16px;
+  font-weight: 400;
+  color: rgba(0,0,0,0.7);
+  line-height: 1.55;
+  max-width: 420px;
+}
+.feat-bot {
+  display: flex; align-items: center; gap: 24px;
+}
+.feat-price {
+  font-size: 32px; font-weight: 300; color: #111;
+  letter-spacing: -1.2px;
+}
+.feat-price span { font-size: 12px; font-weight: 500; color: rgba(0,0,0,0.6); margin-left: 6px; }
+.feat-cta {
+  background: #111; color: #fff; padding: 18px 28px;
+  font-family: inherit; font-size: 13px; font-weight: 500;
+  letter-spacing: 0.5px; border: none; cursor: pointer;
+  display: inline-flex; align-items: center; gap: 10px;
+  text-decoration: none;
+  transition: gap .25s ease, background .25s ease;
+}
+.feat-cta:hover { gap: 14px; background: #000; }
+.feat-cta svg { width: 14px; height: 14px; }
+
+.feat-right {
+  padding: 56px;
+  display: flex; align-items: center; justify-content: center;
+  position: relative;
+}
+.feat-right img {
+  max-width: 100%;
+  max-height: 420px;
+  object-fit: contain;
+  filter: drop-shadow(0 30px 60px rgba(0,0,0,0.15));
+}
+
+/* ─── LINEUP HEADER ─── */
+.lineup-header {
+  padding: 64px 64px 32px;
+  max-width: 1520px;
+  margin: 0 auto;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 48px;
+  border-top: 1px solid #eaeaea;
+}
+.lineup-kicker {
+  font-size: 11px; font-weight: 600; letter-spacing: 2.4px;
+  color: #999; text-transform: uppercase;
+  margin-bottom: 16px;
+}
+.lineup-title {
+  font-size: clamp(36px, 4.4vw, 72px);
+  font-weight: 200;
+  letter-spacing: -2.4px;
+  line-height: 0.98;
+  color: #111;
+}
+.lineup-sub {
+  font-size: 15px;
+  font-weight: 300;
+  color: #666;
+  max-width: 340px;
+  line-height: 1.5;
+  padding-bottom: 8px;
+}
+
+/* ─── PRODUCT GRID ─── */
+.grid-wrap {
+  padding: 16px 64px 48px;
+  max-width: 1520px;
+  margin: 0 auto;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+.card {
+  background: #fff;
+  overflow: hidden;
+  cursor: pointer;
+  position: relative;
+  transition: transform .5s cubic-bezier(.16,1,.3,1);
+}
+.card-img {
+  position: relative;
+  height: 360px;
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden;
+}
+.card-img img {
+  width: 80%;
+  height: 85%;
+  object-fit: contain;
+  transition: transform .8s cubic-bezier(.16,1,.3,1);
+}
+.card:hover .card-img img { transform: scale(1.06); }
+.card-badge {
+  position: absolute;
+  top: 16px; left: 16px;
+  background: #111;
+  color: #fff;
+  padding: 4px 10px;
+  font-size: 10px; font-weight: 600;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+}
+.card-meta {
+  padding: 20px 4px 0;
+  display: flex; justify-content: space-between; align-items: baseline;
+}
+.card-name {
+  font-size: 18px; font-weight: 500;
+  color: #111;
+  letter-spacing: -0.4px;
+}
+.card-by {
+  font-size: 11px; font-weight: 500;
+  color: #888; letter-spacing: 0.3px;
+  margin-top: 2px;
+}
+.card-price {
+  font-size: 18px; font-weight: 500;
+  color: #111; white-space: nowrap;
+}
+.card-price span { font-size: 11px; color: #888; margin-left: 4px; font-weight: 400; }
+.card-desc {
+  padding: 4px 4px 16px;
+  font-size: 13px; color: #666; line-height: 1.5;
+}
+.card-cta {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 12px 16px;
+  background: #111; color: #fff;
+  font-family: inherit; font-size: 12px; font-weight: 500;
+  letter-spacing: 0.4px;
+  text-decoration: none;
+  margin: 0 4px;
+  transition: gap .25s ease, background .2s ease;
+}
+.card-cta:hover { gap: 12px; background: #000; }
+.card-cta svg { width: 12px; height: 12px; }
+
+/* ─── REWARDS PROMO STRIP ─── */
+.rewards-strip {
+  margin: 24px 64px 80px;
+  max-width: calc(1520px - 128px);
+  margin-left: auto; margin-right: auto;
+  padding: 24px 32px;
+  background: #111;
+  color: #fff;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+.rs-left { display: flex; align-items: center; gap: 20px; }
+.rs-dot {
+  width: 8px; height: 8px;
+  background: linear-gradient(135deg, #FFB088, #FF7A9C);
+  animation: pulseDot 2s ease-in-out infinite;
+  flex-shrink: 0;
+}
+@keyframes pulseDot { 0%,100% { opacity:1; transform:scale(1); } 50% { opacity:.5; transform:scale(1.3); } }
+.rs-kick { font-size: 11px; font-weight: 600; letter-spacing: 2px; color: #FFB088; text-transform: uppercase; }
+.rs-text {
+  font-size: 15px; font-weight: 300;
+  color: rgba(255,255,255,0.85);
+  letter-spacing: -0.2px;
+}
+.rs-text strong { font-weight: 500; color: #fff; }
+.rs-link {
+  font-size: 12px; font-weight: 500; color: #fff;
+  text-decoration: none; letter-spacing: 0.5px;
+  display: inline-flex; align-items: center; gap: 8px;
+  border-bottom: 1px solid rgba(255,255,255,0.3);
+  padding-bottom: 2px;
+  transition: gap .25s ease, border-color .2s ease;
+}
+.rs-link:hover { gap: 12px; border-color: #fff; }
+
+/* ─── FOOTER ─── */
+.footer {
+  padding: 48px 64px;
+  max-width: 1520px;
+  margin: 0 auto;
+  border-top: 1px solid #eaeaea;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.footer p { font-size: 12px; color: #999; letter-spacing: 0.5px; }
+.footer-brand { font-size: 12px; font-weight: 600; letter-spacing: 2px; color: #111; }
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 1024px) {
+  .back-row, .hero, .featured-wrap, .lineup-header, .grid-wrap, .footer {
+    padding-left: 40px; padding-right: 40px;
+  }
+  .featured { grid-template-columns: 1fr; }
+  .feat-left { min-height: auto; padding: 40px; }
+  .feat-right { padding: 0 40px 40px; min-height: 300px; }
+  .grid { grid-template-columns: 1fr; }
+  .lineup-header { flex-direction: column; align-items: flex-start; gap: 20px; }
+  .rewards-strip { margin-left: 40px; margin-right: 40px; }
+}
+@media (max-width: 640px) {
+  .nav { padding: 0 20px; }
+  .nav-link { display: none; }
+  .back-row, .hero, .featured-wrap, .lineup-header, .grid-wrap, .footer {
+    padding-left: 20px; padding-right: 20px;
+  }
+  .rewards-strip { margin-left: 20px; margin-right: 20px; flex-direction: column; align-items: flex-start; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .featured::before, .featured::after, .rs-dot { animation: none; }
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a class="brand-link" href="index.html"><div class="brand">REVANCE</div></a>
+  <div class="nav-right">
+    <a href="index.html" class="nav-link">Dashboard</a>
+    <a href="rewards.html" class="nav-link">Rewards</a>
+    <a href="#" class="nav-link active">Products</a>
+    <a href="experience.html" class="nav-link">Experience</a>
+    <a href="numbers.html" class="nav-link">The Numbers</a>
+    <a href="#" class="nav-cart">Cart <span class="dot"></span> 0</a>
+    <div class="nav-avatar" title="Dr. Jane Channel"></div>
+  </div>
+</nav>
+
+<!-- Back link -->
+<div class="back-row">
+  <a class="back-link" href="index.html">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+    Dashboard
+  </a>
+</div>
+
+<!-- Hero -->
+<section class="hero">
+  <p class="eyebrow">Purchase Products</p>
+  <h1 class="hero-title">Built for<br>your practice.</h1>
+  <p class="hero-sub">Every order counts toward your Advocate tier. Shop the full Revance portfolio — neurotoxins, fillers, devices, and training.</p>
+</section>
+
+<!-- Featured Product -->
+<section class="featured-wrap">
+  <div class="featured">
+    <div class="feat-left">
+      <div>
+        <span class="feat-kicker">Most Popular · 3× Rewards This Month</span>
+        <h2 class="feat-title">DAXXIFY<sup style="font-size:0.4em;vertical-align:super;letter-spacing:0;">®</sup></h2>
+        <p class="feat-desc">Long-lasting neurotoxin. Earn 3× rewards points on every order placed this month — every unit closes the gap to Advocate.</p>
+      </div>
+      <div class="feat-bot">
+        <div class="feat-price">$310<span>/ vial</span></div>
+        <a href="#" class="feat-cta">
+          Order Now
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+    </div>
+    <div class="feat-right">
+      <img src="assets/products/daxxify.png" alt="DAXXIFY">
+    </div>
+  </div>
+</section>
+
+<!-- Lineup Header -->
+<section class="lineup-header">
+  <div>
+    <p class="lineup-kicker">The Portfolio</p>
+    <h2 class="lineup-title">Three products,<br>one lineup.</h2>
+  </div>
+  <p class="lineup-sub">Every order builds toward Advocate and earns rewards you can redeem anytime.</p>
+</section>
+
+<!-- Product Grid -->
+<section class="grid-wrap">
+  <div class="grid">
+
+    <div class="card">
+      <div class="card-img" style="background:#e7fbfa;">
+        <span class="card-badge">Popular</span>
+        <img src="assets/products/daxxify.png" alt="DAXXIFY vial">
+      </div>
+      <div class="card-meta">
+        <div>
+          <div class="card-name">DAXXIFY®</div>
+          <div class="card-by">Long-lasting neurotoxin</div>
+        </div>
+        <div class="card-price">$310<span>/vial</span></div>
+      </div>
+      <p class="card-desc">Earn 3× rewards points on every order this month.</p>
+      <a href="#" class="card-cta">Add to Order <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+    </div>
+
+    <div class="card">
+      <div class="card-img" style="background:#eae7f7;">
+        <span class="card-badge">New</span>
+        <img src="assets/products/rha-collection.png" alt="RHA Collection syringes">
+      </div>
+      <div class="card-meta">
+        <div>
+          <div class="card-name">RHA® Collection</div>
+          <div class="card-by">by Teoxane · HA filler</div>
+        </div>
+        <div class="card-price">$700<span>/syringe</span></div>
+      </div>
+      <p class="card-desc">The #1 selling hyaluronic acid filler brand in the US.</p>
+      <a href="#" class="card-cta">Add to Order <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+    </div>
+
+    <div class="card">
+      <div class="card-img" style="background:#e5e6f4;">
+        <span class="card-badge">Save 15%</span>
+        <img src="assets/products/skinpen.png" alt="SkinPen Precision device">
+      </div>
+      <div class="card-meta">
+        <div>
+          <div class="card-name">SkinPen® Precision</div>
+          <div class="card-by">FDA-cleared microneedling device</div>
+        </div>
+        <div class="card-price">$984<span>/case</span></div>
+      </div>
+      <p class="card-desc">Introductory pricing on your first SkinPen order.</p>
+      <a href="#" class="card-cta">Add to Order <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+    </div>
+
+  </div>
+</section>
+
+<!-- Rewards Promo Strip -->
+<section class="rewards-strip">
+  <div class="rs-left">
+    <span class="rs-dot"></span>
+    <div>
+      <div class="rs-kick">Rewards Available</div>
+      <p class="rs-text">You have <strong>$250 in rewards</strong> — applied automatically at checkout.</p>
+    </div>
+  </div>
+  <a href="rewards.html" class="rs-link">
+    View rewards
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+  </a>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <span class="footer-brand">REVANCE</span>
+  <p>Free shipping on orders over $500 · <a href="#" style="color:#666;text-decoration:underline;">Shipping & Returns</a></p>
+</footer>
+
+</body>
+</html>
