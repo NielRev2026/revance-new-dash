@@ -130,6 +130,17 @@ html,body{background:#fff;color:#111;font-family:'Poppins',-apple-system,BlinkMa
 .success-secondary:hover{background:#eaeaea;}
 .success-primary svg,.success-secondary svg{width:14px;height:14px;}
 
+/* CONFETTI */
+.confetti-canvas{
+  position:fixed;inset:0;
+  pointer-events:none;
+  z-index:201;
+  opacity:0;
+  transition:opacity .4s ease;
+}
+.confetti-canvas.show{opacity:1;}
+@media (prefers-reduced-motion:reduce){.confetti-canvas{display:none;}}
+
 /* FOOTER */
 .footer{padding:48px 64px;border-top:1px solid #eaeaea;}
 .footer-inner{max-width:1520px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;gap:32px;flex-wrap:wrap;}
@@ -223,6 +234,9 @@ html,body{background:#fff;color:#111;font-family:'Poppins',-apple-system,BlinkMa
 
 </main>
 
+<!-- CONFETTI canvas (lives above the success overlay) -->
+<canvas class="confetti-canvas" id="confetti" aria-hidden="true"></canvas>
+
 <!-- SUCCESS STATE -->
 <div class="success" id="success">
   <div class="success-icon">
@@ -297,19 +311,118 @@ document.querySelectorAll('.recent-chip').forEach(chip => {
   });
 });
 
+// ─── Confetti (canvas-based, palette-matched, runs once per success) ───
+const confettiCanvas = document.getElementById('confetti');
+const cctx = confettiCanvas.getContext('2d');
+const palette = ['#FFB088','#FF7A9C','#FFD194','#A8E6CF','#56CCF2','#D4FC79','#E0C3FC','#b88547'];
+let particles = [];
+let confettiRaf = null;
+
+function sizeCanvas() {
+  confettiCanvas.width  = window.innerWidth  * devicePixelRatio;
+  confettiCanvas.height = window.innerHeight * devicePixelRatio;
+  confettiCanvas.style.width  = window.innerWidth  + 'px';
+  confettiCanvas.style.height = window.innerHeight + 'px';
+  cctx.setTransform(devicePixelRatio, 0, 0, devicePixelRatio, 0, 0);
+}
+sizeCanvas();
+window.addEventListener('resize', sizeCanvas);
+
+function spawn(originX, originY, n, vxRange) {
+  for (let i = 0; i < n; i++) {
+    particles.push({
+      x: originX + (Math.random() - 0.5) * 40,
+      y: originY + (Math.random() - 0.5) * 20,
+      vx: vxRange[0] + Math.random() * (vxRange[1] - vxRange[0]),
+      vy: -Math.random() * 6 - 4,
+      g:  0.18 + Math.random() * 0.08,
+      drag: 0.992,
+      color: palette[(Math.random() * palette.length) | 0],
+      w: 5 + Math.random() * 6,
+      h: 9 + Math.random() * 10,
+      rot: Math.random() * Math.PI * 2,
+      vRot: (Math.random() - 0.5) * 0.25,
+      shape: Math.random() < 0.3 ? 'strip' : 'rect',
+      life: 1,
+    });
+  }
+}
+
+function fireConfetti() {
+  const W = window.innerWidth, H = window.innerHeight;
+  particles = [];
+  // Big burst from top-center
+  spawn(W * 0.5, -10, 110, [-7, 7]);
+  // Two side sprays
+  spawn(W * 0.08, H * 0.15, 40, [ 1.5, 7]);
+  spawn(W * 0.92, H * 0.15, 40, [-7, -1.5]);
+  // Light "falling" rain from the top edge (staggered over 800ms)
+  let i = 0;
+  const rainTimer = setInterval(() => {
+    spawn(Math.random() * W, -10, 6, [-1.5, 1.5]);
+    if (++i >= 16) clearInterval(rainTimer);
+  }, 50);
+
+  confettiCanvas.classList.add('show');
+  cancelAnimationFrame(confettiRaf);
+  animateConfetti();
+}
+
+function animateConfetti() {
+  const W = window.innerWidth, H = window.innerHeight;
+  cctx.clearRect(0, 0, W, H);
+  particles.forEach(p => {
+    p.vy += p.g;
+    p.vx *= p.drag;
+    p.x += p.vx;
+    p.y += p.vy;
+    p.rot += p.vRot;
+    if (p.y > H) p.life -= 0.03;
+
+    cctx.save();
+    cctx.translate(p.x, p.y);
+    cctx.rotate(p.rot);
+    cctx.globalAlpha = Math.max(0, p.life);
+    cctx.fillStyle = p.color;
+    if (p.shape === 'strip') {
+      cctx.fillRect(-1, -p.h / 2, 2, p.h);
+    } else {
+      cctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+    }
+    cctx.restore();
+  });
+  particles = particles.filter(p => p.life > 0 && p.y < H + 60);
+
+  if (particles.length > 0) {
+    confettiRaf = requestAnimationFrame(animateConfetti);
+  } else {
+    cctx.clearRect(0, 0, W, H);
+    confettiCanvas.classList.remove('show');
+  }
+}
+
+function stopConfetti() {
+  cancelAnimationFrame(confettiRaf);
+  particles = [];
+  cctx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+  confettiCanvas.classList.remove('show');
+}
+
 // Submit
 form.addEventListener('submit', (e) => {
   e.preventDefault();
   if (submit.disabled) return;
-  // Demo: show success state
   successMsg.textContent = 'We matched ' + phone.value + ' to a patient on file and queued them for their 2:30 PM appointment with Dr. Channel.';
   success.classList.add('show');
   document.body.style.overflow = 'hidden';
+  // Celebrate — a beat after the overlay fades in
+  setTimeout(fireConfetti, 320);
 });
 
 checkAnother.addEventListener('click', () => {
   success.classList.remove('show');
   document.body.style.overflow = '';
+  stopConfetti();
   phone.value = '';
   submit.disabled = true;
   phone.focus();
