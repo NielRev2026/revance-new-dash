@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>New Dash · Compact — Revance</title>
+<title>New Dash · Gold — Revance</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&family=Playfair+Display:ital,wght@1,400&display=swap" rel="stylesheet">
@@ -127,13 +127,16 @@ html, body { background: #fff; color: #111; font-family: 'Poppins', -apple-syste
 }
 @keyframes pulseLight { 0%,100% { transform: translate(-14%,-10%) scale(1); opacity: .55; } 50% { transform: translate(14%,12%) scale(1.25); opacity: .85; } }
 
-.bg-rewards { background: radial-gradient(circle at 22% 28%, #FFB088 0%, transparent 52%), radial-gradient(circle at 78% 72%, #FF7A9C 0%, transparent 55%), radial-gradient(circle at 55% 52%, #FFD194 0%, transparent 48%), linear-gradient(135deg, #FFE8D6 0%, #FF9EB5 100%); background-size: 140% 140%, 140% 140%, 160% 160%, 100% 100%; animation: flow1 15s ease-in-out infinite alternate; }
+/* Tile 1 — Champagne gold (lightest) */
+.bg-rewards { background: radial-gradient(circle at 22% 28%, #FFEAB0 0%, transparent 52%), radial-gradient(circle at 78% 72%, #E8C782 0%, transparent 55%), radial-gradient(circle at 55% 52%, #FFF3D2 0%, transparent 48%), linear-gradient(135deg, #FDF3D4 0%, #D9B977 100%); background-size: 140% 140%, 140% 140%, 160% 160%, 100% 100%; animation: flow1 15s ease-in-out infinite alternate; }
 @keyframes flow1 { 0% { background-position: 0% 0%, 100% 100%, 50% 50%, 0% 0%; filter: hue-rotate(0deg); } 50% { background-position: 60% 40%, 40% 60%, 20% 80%, 50% 50%; filter: hue-rotate(8deg); } 100% { background-position: 100% 60%, 0% 40%, 80% 20%, 100% 100%; filter: hue-rotate(-6deg); } }
 
-.bg-products { background: radial-gradient(circle at 28% 72%, #8EC5FC 0%, transparent 55%), radial-gradient(circle at 72% 28%, #667eea 0%, transparent 58%), radial-gradient(circle at 50% 50%, #E0C3FC 0%, transparent 50%), linear-gradient(135deg, #C9E6FF 0%, #8B7FDF 100%); background-size: 140% 140%, 140% 140%, 160% 160%, 100% 100%; animation: flow2 17s ease-in-out infinite alternate; }
+/* Tile 2 — Classic gold (medium) */
+.bg-products { background: radial-gradient(circle at 28% 72%, #E0C16E 0%, transparent 55%), radial-gradient(circle at 72% 28%, #C9A237 0%, transparent 58%), radial-gradient(circle at 50% 50%, #F0DCA0 0%, transparent 50%), linear-gradient(135deg, #EED794 0%, #B88547 100%); background-size: 140% 140%, 140% 140%, 160% 160%, 100% 100%; animation: flow2 17s ease-in-out infinite alternate; }
 @keyframes flow2 { 0% { background-position: 0% 100%, 100% 0%, 50% 50%, 0% 0%; filter: hue-rotate(0deg); } 50% { background-position: 50% 50%, 50% 50%, 30% 70%, 50% 50%; filter: hue-rotate(10deg); } 100% { background-position: 100% 0%, 0% 100%, 70% 30%, 100% 100%; filter: hue-rotate(-8deg); } }
 
-.bg-patients { background: radial-gradient(circle at 22% 78%, #A8E6CF 0%, transparent 55%), radial-gradient(circle at 78% 22%, #56CCF2 0%, transparent 58%), radial-gradient(circle at 55% 52%, #D4FC79 0%, transparent 48%), linear-gradient(135deg, #E8FBDC 0%, #6FCF97 100%); background-size: 140% 140%, 140% 140%, 160% 160%, 100% 100%; animation: flow3 19s ease-in-out infinite alternate; }
+/* Tile 3 — Antique amber (warmest) */
+.bg-patients { background: radial-gradient(circle at 22% 78%, #D4A868 0%, transparent 55%), radial-gradient(circle at 78% 22%, #E8C890 0%, transparent 58%), radial-gradient(circle at 55% 52%, #C9954A 0%, transparent 48%), linear-gradient(135deg, #F2D8A0 0%, #B88547 100%); background-size: 140% 140%, 140% 140%, 160% 160%, 100% 100%; animation: flow3 19s ease-in-out infinite alternate; }
 @keyframes flow3 { 0% { background-position: 0% 100%, 100% 0%, 50% 50%, 0% 0%; filter: hue-rotate(0deg); } 50% { background-position: 40% 60%, 60% 40%, 70% 30%, 50% 50%; filter: hue-rotate(-6deg); } 100% { background-position: 100% 60%, 0% 40%, 20% 80%, 100% 100%; filter: hue-rotate(10deg); } }
 
 /* Tile content — compact */
@@ -295,12 +298,8 @@ html, body { background: #fff; color: #111; font-family: 'Poppins', -apple-syste
 </section>
 
 <div class="variant-row">
-  <a class="variant-toggle" href="index-spacious.html">
-    Spacious layout
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
-  </a>
-  <a class="variant-toggle" href="index-gold.html" style="margin-left:32px;">
-    Gold layout
+  <a class="variant-toggle" href="index.html">
+    View colored layout
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
   </a>
 </div>
