@@ -181,30 +181,6 @@ html, body { background: #fff; color: #111; font-family: 'Poppins', -apple-syste
 .tile-arrow svg { width: 16px; height: 16px; stroke: #111; }
 .tile:hover .tile-arrow { opacity: 1; transform: translateX(0); }
 
-/* ─── VARIANT TOGGLE ─── */
-.variant-row {
-  padding: 0 64px 48px;
-  max-width: 1520px;
-  margin: 0 auto;
-  display: flex;
-  justify-content: center;
-}
-.variant-toggle {
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 1.6px;
-  text-transform: uppercase;
-  color: #999;
-  text-decoration: none;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 0;
-  border-bottom: 1px solid #eaeaea;
-  transition: color .2s ease, gap .25s ease, border-color .2s ease;
-}
-.variant-toggle:hover { color: #111; gap: 12px; border-color: #111; }
-.variant-toggle svg { width: 12px; height: 12px; }
 
 /* ─── FOOTER ─── */
 .footer { padding: 40px 64px; border-top: 1px solid #eaeaea; margin-top: 0; }
@@ -220,7 +196,6 @@ html, body { background: #fff; color: #111; font-family: 'Poppins', -apple-syste
 @media (max-width: 1024px) {
   .hero { padding: 90px 40px 16px; min-height: 40vh; }
   .tiles-wrap { padding: 8px 40px 32px; }
-  .variant-row { padding: 0 40px 40px; }
   .tiles { gap: 16px; }
 }
 @media (max-width: 720px) {
@@ -228,7 +203,6 @@ html, body { background: #fff; color: #111; font-family: 'Poppins', -apple-syste
   .nav-link { display: none; }
   .hero { padding: 88px 24px 16px; min-height: auto; }
   .tiles-wrap { padding: 8px 24px 24px; }
-  .variant-row { padding: 0 24px 32px; }
   .tiles { grid-template-columns: 1fr; }
   .tile { aspect-ratio: 2.1 / 1; min-height: 180px; max-height: 220px; }
   .tile-inner { padding: 20px; }
@@ -296,13 +270,6 @@ html, body { background: #fff; color: #111; font-family: 'Poppins', -apple-syste
 
   </div>
 </section>
-
-<div class="variant-row">
-  <a class="variant-toggle" href="index.html">
-    View colored layout
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
-  </a>
-</div>
 
 <footer class="footer">
   <div class="footer-inner">
