@@ -24,6 +24,12 @@
   // Navigation items (Dashboard href is computed from settings at render time)
   const settings = readSettings();
 
+  // ─── Apply palette to <html> so page CSS can respond ───
+  function applyPalette(p) {
+    document.documentElement.dataset.palette = p;
+  }
+  applyPalette(settings.palette);
+
   const NAV = [
     { label: 'Dashboard',   href: homeUrl(settings), flag: 'dashboard' },
     { label: 'Rewards',     href: 'rewards.html' },
@@ -117,6 +123,65 @@
     .rm-foot .sign-out{color:#b88547;}
 
     .nav-avatar{cursor:pointer;}
+
+    /* ─── GOLD PALETTE OVERRIDES (site-wide when palette=gold) ─── */
+    /* Nav avatars (every page) */
+    [data-palette="gold"] .nav-avatar{
+      background:linear-gradient(135deg,#E0C16E,#B88547)!important;
+      box-shadow:0 2px 8px rgba(184,133,71,0.3)!important;
+    }
+    [data-palette="gold"] .rm-avatar{
+      background:linear-gradient(135deg,#E0C16E,#B88547)!important;
+    }
+
+    /* Rewards page — balance card flowing gradient + progress bar */
+    [data-palette="gold"] .rewards-card::before{
+      background:
+        radial-gradient(circle at 22% 28%, #FFEAB0 0%, transparent 52%),
+        radial-gradient(circle at 78% 72%, #E8C782 0%, transparent 55%),
+        radial-gradient(circle at 55% 52%, #FFF3D2 0%, transparent 48%),
+        linear-gradient(135deg, #FDF3D4 0%, #D9B977 100%)!important;
+      background-size:140% 140%,140% 140%,160% 160%,100% 100%!important;
+    }
+    [data-palette="gold"] .progress-fill{
+      background:linear-gradient(90deg,#E8C782 0%,#B88547 100%)!important;
+    }
+    [data-palette="gold"] .tick.current .tick-amt{color:#B88547!important;}
+
+    /* Purchase page — featured card gradient + product tints + promo strip dot */
+    [data-palette="gold"] .featured::before{
+      background:
+        radial-gradient(circle at 28% 72%, #E0C16E 0%, transparent 55%),
+        radial-gradient(circle at 72% 28%, #C9A237 0%, transparent 58%),
+        radial-gradient(circle at 50% 50%, #F0DCA0 0%, transparent 50%),
+        linear-gradient(135deg, #EED794 0%, #B88547 100%)!important;
+      background-size:140% 140%,140% 140%,160% 160%,100% 100%!important;
+    }
+    [data-palette="gold"] .card-img{
+      background:#F5E5B5!important;
+    }
+    [data-palette="gold"] .rs-dot{
+      background:linear-gradient(135deg,#E0C16E,#B88547)!important;
+    }
+    [data-palette="gold"] .rs-kick{color:#E0C16E!important;}
+    [data-palette="gold"] .nav-cart .dot{background:#B88547!important;}
+
+    /* Experience page — outro gradient word */
+    [data-palette="gold"] .outro h2 em{
+      background:linear-gradient(135deg,#FFEAB0,#D4A868 50%,#B88547)!important;
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+    }
+
+    /* Check-in page — success icon + recent-chip dot */
+    [data-palette="gold"] .success-icon{
+      background:linear-gradient(135deg,#E0C16E,#B88547)!important;
+    }
+    [data-palette="gold"] .chip-dot{background:#B88547!important;}
+    [data-palette="gold"] .input-underline::after{
+      background:linear-gradient(90deg,#FFEAB0 0%,#D4A868 50%,#B88547 100%)!important;
+    }
 
     @media (max-width:640px){
       .rm-menu{padding:64px 28px 28px;gap:24px;}
@@ -243,8 +308,12 @@
           const newUrl = homeUrl(settings);
           if (dashLink) dashLink.href = newUrl;
 
-          // If user is on a home variant, jump to the matching variant immediately.
-          // Otherwise just update the Dashboard link for next click.
+          // Apply palette live so non-home pages recolor immediately
+          if (key === 'palette') applyPalette(settings.palette);
+
+          // If user is on a home variant, jump to the matching file.
+          // (Home variants have the palette baked into their tile CSS, so
+          //  we need the right file to render the tiles correctly.)
           if (isOnHome && currentPage !== newUrl.toLowerCase()) {
             location.href = newUrl;
           }
