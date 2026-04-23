@@ -124,14 +124,16 @@
 
     .nav-avatar{cursor:pointer;}
 
-    /* ─── GOLD PALETTE OVERRIDES (site-wide when palette=gold) ─── */
+    /* ─── GOLD PALETTE OVERRIDES — single champagne-gold source (tile 01) ───
+       Palette:  #FFEAB0 #E8C782 #FFF3D2 #FDF3D4 #D9B977  */
+
     /* Nav avatars (every page) */
     [data-palette="gold"] .nav-avatar{
-      background:linear-gradient(135deg,#E0C16E,#B88547)!important;
-      box-shadow:0 2px 8px rgba(184,133,71,0.3)!important;
+      background:linear-gradient(135deg,#E8C782,#D9B977)!important;
+      box-shadow:0 2px 8px rgba(217,185,119,0.35)!important;
     }
     [data-palette="gold"] .rm-avatar{
-      background:linear-gradient(135deg,#E0C16E,#B88547)!important;
+      background:linear-gradient(135deg,#E8C782,#D9B977)!important;
     }
 
     /* Rewards page — balance card flowing gradient + progress bar */
@@ -144,31 +146,31 @@
       background-size:140% 140%,140% 140%,160% 160%,100% 100%!important;
     }
     [data-palette="gold"] .progress-fill{
-      background:linear-gradient(90deg,#E8C782 0%,#B88547 100%)!important;
+      background:linear-gradient(90deg,#E8C782 0%,#D9B977 100%)!important;
     }
-    [data-palette="gold"] .tick.current .tick-amt{color:#B88547!important;}
+    [data-palette="gold"] .tick.current .tick-amt{color:#D9B977!important;}
 
     /* Purchase page — featured card gradient + product tints + promo strip dot */
     [data-palette="gold"] .featured::before{
       background:
-        radial-gradient(circle at 28% 72%, #E0C16E 0%, transparent 55%),
-        radial-gradient(circle at 72% 28%, #C9A237 0%, transparent 58%),
-        radial-gradient(circle at 50% 50%, #F0DCA0 0%, transparent 50%),
-        linear-gradient(135deg, #EED794 0%, #B88547 100%)!important;
+        radial-gradient(circle at 22% 28%, #FFEAB0 0%, transparent 52%),
+        radial-gradient(circle at 78% 72%, #E8C782 0%, transparent 55%),
+        radial-gradient(circle at 55% 52%, #FFF3D2 0%, transparent 48%),
+        linear-gradient(135deg, #FDF3D4 0%, #D9B977 100%)!important;
       background-size:140% 140%,140% 140%,160% 160%,100% 100%!important;
     }
     [data-palette="gold"] .card-img{
-      background:#F5E5B5!important;
+      background:#FDF3D4!important;
     }
     [data-palette="gold"] .rs-dot{
-      background:linear-gradient(135deg,#E0C16E,#B88547)!important;
+      background:linear-gradient(135deg,#E8C782,#D9B977)!important;
     }
-    [data-palette="gold"] .rs-kick{color:#E0C16E!important;}
-    [data-palette="gold"] .nav-cart .dot{background:#B88547!important;}
+    [data-palette="gold"] .rs-kick{color:#E8C782!important;}
+    [data-palette="gold"] .nav-cart .dot{background:#D9B977!important;}
 
     /* Experience page — outro gradient word */
     [data-palette="gold"] .outro h2 em{
-      background:linear-gradient(135deg,#FFEAB0,#D4A868 50%,#B88547)!important;
+      background:linear-gradient(135deg,#FFEAB0,#E8C782 50%,#D9B977)!important;
       -webkit-background-clip:text;
       background-clip:text;
       color:transparent;
@@ -176,11 +178,11 @@
 
     /* Check-in page — success icon + recent-chip dot */
     [data-palette="gold"] .success-icon{
-      background:linear-gradient(135deg,#E0C16E,#B88547)!important;
+      background:linear-gradient(135deg,#E8C782,#D9B977)!important;
     }
-    [data-palette="gold"] .chip-dot{background:#B88547!important;}
+    [data-palette="gold"] .chip-dot{background:#D9B977!important;}
     [data-palette="gold"] .input-underline::after{
-      background:linear-gradient(90deg,#FFEAB0 0%,#D4A868 50%,#B88547 100%)!important;
+      background:linear-gradient(90deg,#FFEAB0 0%,#E8C782 50%,#D9B977 100%)!important;
     }
 
     @media (max-width:640px){
