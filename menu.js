@@ -2,13 +2,16 @@
 // Auto-wires to any .nav-avatar click, injects full-height panel with large-font links.
 (function () {
   // ─── HOME VARIANTS ───
-  const HOME_VARIANTS = {
+  // Layout=Tiles is the standard 3-tile home (palette × density grid).
+  // Layout=Modules adds Points + Check-In cards above the tiles (single density).
+  const TILE_VARIANTS = {
     'colored-compact':  'index.html',
     'colored-spacious': 'index-spacious.html',
     'gold-compact':     'index-gold.html',
     'gold-spacious':    'index-gold-spacious.html',
   };
-  const HOME_FILES = Object.values(HOME_VARIANTS);
+  const MODULES_FILE = 'index-modules.html';
+  const HOME_FILES = [...Object.values(TILE_VARIANTS), MODULES_FILE];
   const SETTINGS_KEY = 'revanceHomeSettings';
 
   function readSettings() {
@@ -16,10 +19,14 @@
     try { s = JSON.parse(localStorage.getItem(SETTINGS_KEY) || '{}') || {}; } catch (e) {}
     s.palette = (s.palette === 'gold') ? 'gold' : 'colored';
     s.density = (s.density === 'spacious') ? 'spacious' : 'compact';
+    s.layout  = (s.layout  === 'modules')  ? 'modules'  : 'tiles';
     return s;
   }
   function writeSettings(s) { localStorage.setItem(SETTINGS_KEY, JSON.stringify(s)); }
-  function homeUrl(s) { return HOME_VARIANTS[s.palette + '-' + s.density]; }
+  function homeUrl(s) {
+    if (s.layout === 'modules') return MODULES_FILE;
+    return TILE_VARIANTS[s.palette + '-' + s.density];
+  }
 
   // Navigation items (Dashboard href is computed from settings at render time)
   const settings = readSettings();
@@ -185,6 +192,11 @@
       background:linear-gradient(90deg,#FFEAB0 0%,#E8C782 50%,#D9B977 100%)!important;
     }
 
+    /* Modules home variant — Points module progress bar */
+    [data-palette="gold"] .module-points .progress-fill{
+      background:linear-gradient(90deg,#E8C782,#D9B977)!important;
+    }
+
     @media (max-width:640px){
       .rm-menu{padding:64px 28px 28px;gap:24px;}
       .rm-nav a{font-size:30px;padding:6px 0;}
@@ -229,6 +241,13 @@
 
       <div class="rm-settings">
         <p class="rm-settings-label">Dashboard Settings</p>
+        <div class="rm-settings-row">
+          <span class="rm-settings-key">Layout</span>
+          <div class="rm-toggle" data-setting="layout">
+            <button class="rm-toggle-btn" data-value="tiles">Tiles</button>
+            <button class="rm-toggle-btn" data-value="modules">Modules</button>
+          </div>
+        </div>
         <div class="rm-settings-row">
           <span class="rm-settings-key">Palette</span>
           <div class="rm-toggle" data-setting="palette">

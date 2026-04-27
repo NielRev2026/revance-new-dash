@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>New Dash · Gold — Revance</title>
+<title>New Dash · Modules — Revance</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&family=Playfair+Display:ital,wght@1,400&display=swap" rel="stylesheet">
@@ -19,16 +19,16 @@ html, body { background: #fff; color: #111; font-family: 'Poppins', -apple-syste
 .nav-link:hover { color: #111; }
 .nav-avatar { width: 32px; height: 32px; background: linear-gradient(135deg, #FFB088, #FF7A9C); box-shadow: 0 2px 8px rgba(255,122,156,0.25); }
 
-/* ─── HERO — compressed ─── */
+/* ─── HERO — minimal for modules layout ─── */
 .hero {
-  padding: 100px 64px 20px;
+  padding: 96px 64px 16px;
   max-width: 1520px;
   margin: 0 auto;
   position: relative;
-  min-height: 44vh;
+  min-height: auto;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
 }
 .hero.personalized {
   max-width: none;
@@ -65,12 +65,12 @@ html, body { background: #fff; color: #111; font-family: 'Poppins', -apple-syste
 .hero-chip .chip-x svg { width: 10px; height: 10px; stroke: #fff; }
 
 .greeting {
-  font-size: clamp(36px, 5.8vw, 80px);
+  font-size: clamp(28px, 3.6vw, 52px);
   font-weight: 200;
-  letter-spacing: -2.4px;
+  letter-spacing: -1.5px;
   line-height: 1.02;
   color: #111;
-  margin-bottom: 14px;
+  margin-bottom: 6px;
   min-height: 1.1em;
 }
 .typed { display: inline; }
@@ -88,9 +88,122 @@ html, body { background: #fff; color: #111; font-family: 'Poppins', -apple-syste
 }
 .subtitle.show { opacity: 1; transform: none; }
 
-/* ─── TILES — compact, sitting just under hero ─── */
+/* ─── MODULES (Points + Check-In) ─── */
+.modules-wrap {
+  padding: 8px 64px 16px;
+  max-width: 1520px;
+  margin: 0 auto;
+}
+.modules-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+.module {
+  position: relative;
+  background: #fff;
+  border: 1px solid #eaeaea;
+  padding: 24px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-height: 200px;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity .9s cubic-bezier(.16,1,.3,1), transform .9s cubic-bezier(.16,1,.3,1);
+}
+.module.show { opacity: 1; transform: none; }
+.module-kicker {
+  font-size: 10px; font-weight: 600; letter-spacing: 2.2px;
+  color: #999; text-transform: uppercase;
+}
+
+/* ── Points module ── */
+.module-points .stat-amount {
+  font-size: clamp(40px, 4.6vw, 64px);
+  font-weight: 200; letter-spacing: -2.2px; line-height: .9;
+  color: #111;
+}
+.module-points .stat-amount .dollar { font-weight: 300; opacity: 0.55; margin-right: 2px; }
+.module-points .stat-sub {
+  font-size: 13px; font-weight: 400; color: #707070;
+  margin-top: 6px;
+}
+.module-points .stat-sub strong { font-weight: 600; color: #111; }
+.module-points .progress-track {
+  position: relative;
+  width: 100%;
+  height: 4px;
+  background: #f0f0f0;
+  overflow: hidden;
+}
+.module-points .progress-fill {
+  position: absolute; top: 0; left: 0; bottom: 0;
+  width: 0;
+  background: linear-gradient(90deg, #FFB088, #FF7A9C);
+  transition: width 1.6s cubic-bezier(.16,1,.3,1);
+}
+.module-foot {
+  margin-top: auto;
+  display: flex; align-items: center; justify-content: space-between;
+  font-size: 12px;
+}
+.module-foot .lbl { color: #707070; }
+.module-foot .lbl strong { font-weight: 600; color: #111; }
+.module-foot a {
+  color: #111; font-weight: 500; text-decoration: none;
+  letter-spacing: .3px;
+  transition: gap .25s ease, color .2s ease;
+  display: inline-flex; align-items: center; gap: 6px;
+  border-bottom: 1px solid #111; padding-bottom: 1px;
+}
+.module-foot a:hover { gap: 10px; }
+
+/* ── Check-In module ── */
+.module-checkin .checkin-question {
+  font-size: clamp(22px, 2.2vw, 30px);
+  font-weight: 300;
+  letter-spacing: -.6px;
+  color: #111;
+  margin-bottom: 4px;
+}
+.checkin-form {
+  display: flex;
+  align-items: stretch;
+  gap: 8px;
+}
+.checkin-form input {
+  flex: 1; min-width: 0;
+  font-family: inherit;
+  font-size: clamp(18px, 1.8vw, 22px);
+  font-weight: 300;
+  letter-spacing: -.4px;
+  color: #111;
+  background: #f7f7f7;
+  border: none;
+  outline: none;
+  padding: 14px 16px;
+  font-variant-numeric: tabular-nums;
+  transition: background .2s ease;
+}
+.checkin-form input:focus { background: #f0f0f0; }
+.checkin-form input::placeholder { color: #b0b0b0; }
+.checkin-form button {
+  background: #111; color: #fff;
+  border: none; cursor: pointer;
+  font-family: inherit; font-size: 13px; font-weight: 500; letter-spacing: .4px;
+  padding: 0 22px;
+  display: inline-flex; align-items: center; gap: 8px;
+  transition: gap .25s ease, background .2s ease;
+  white-space: nowrap;
+}
+.checkin-form button svg { width: 14px; height: 14px; }
+.checkin-form button:hover { background: #000; gap: 12px; }
+
+/* ─── TILES — compact, sitting just under modules ─── */
 .tiles-wrap {
-  padding: 12px 64px 40px;
+  padding: 12px 64px 28px;
   max-width: 1520px;
   margin: 0 auto;
 }
@@ -101,9 +214,9 @@ html, body { background: #fff; color: #111; font-family: 'Poppins', -apple-syste
 }
 .tile {
   position: relative;
-  aspect-ratio: 1.6 / 1;
-  min-height: 204px;
-  max-height: 260px;
+  aspect-ratio: 2.4 / 1;
+  min-height: 140px;
+  max-height: 180px;
   overflow: hidden;
   cursor: pointer;
   opacity: 0;
@@ -127,16 +240,13 @@ html, body { background: #fff; color: #111; font-family: 'Poppins', -apple-syste
 }
 @keyframes pulseLight { 0%,100% { transform: translate(-14%,-10%) scale(1); opacity: .55; } 50% { transform: translate(14%,12%) scale(1.25); opacity: .85; } }
 
-/* Tile 1 — Champagne gold (lightest) */
-.bg-rewards { background: radial-gradient(circle at 22% 28%, #FFEAB0 0%, transparent 52%), radial-gradient(circle at 78% 72%, #E8C782 0%, transparent 55%), radial-gradient(circle at 55% 52%, #FFF3D2 0%, transparent 48%), linear-gradient(135deg, #FDF3D4 0%, #D9B977 100%); background-size: 140% 140%, 140% 140%, 160% 160%, 100% 100%; animation: flow1 15s ease-in-out infinite alternate; }
+.bg-rewards { background: radial-gradient(circle at 22% 28%, #FFB088 0%, transparent 52%), radial-gradient(circle at 78% 72%, #FF7A9C 0%, transparent 55%), radial-gradient(circle at 55% 52%, #FFD194 0%, transparent 48%), linear-gradient(135deg, #FFE8D6 0%, #FF9EB5 100%); background-size: 140% 140%, 140% 140%, 160% 160%, 100% 100%; animation: flow1 15s ease-in-out infinite alternate; }
 @keyframes flow1 { 0% { background-position: 0% 0%, 100% 100%, 50% 50%, 0% 0%; filter: hue-rotate(0deg); } 50% { background-position: 60% 40%, 40% 60%, 20% 80%, 50% 50%; filter: hue-rotate(8deg); } 100% { background-position: 100% 60%, 0% 40%, 80% 20%, 100% 100%; filter: hue-rotate(-6deg); } }
 
-/* Tile 2 — Champagne gold (matches tile 1) */
-.bg-products { background: radial-gradient(circle at 22% 28%, #FFEAB0 0%, transparent 52%), radial-gradient(circle at 78% 72%, #E8C782 0%, transparent 55%), radial-gradient(circle at 55% 52%, #FFF3D2 0%, transparent 48%), linear-gradient(135deg, #FDF3D4 0%, #D9B977 100%); background-size: 140% 140%, 140% 140%, 160% 160%, 100% 100%; animation: flow2 15s ease-in-out infinite alternate; }
+.bg-products { background: radial-gradient(circle at 28% 72%, #8EC5FC 0%, transparent 55%), radial-gradient(circle at 72% 28%, #667eea 0%, transparent 58%), radial-gradient(circle at 50% 50%, #E0C3FC 0%, transparent 50%), linear-gradient(135deg, #C9E6FF 0%, #8B7FDF 100%); background-size: 140% 140%, 140% 140%, 160% 160%, 100% 100%; animation: flow2 17s ease-in-out infinite alternate; }
 @keyframes flow2 { 0% { background-position: 0% 100%, 100% 0%, 50% 50%, 0% 0%; filter: hue-rotate(0deg); } 50% { background-position: 50% 50%, 50% 50%, 30% 70%, 50% 50%; filter: hue-rotate(10deg); } 100% { background-position: 100% 0%, 0% 100%, 70% 30%, 100% 100%; filter: hue-rotate(-8deg); } }
 
-/* Tile 3 — Antique amber (warmest) */
-.bg-patients { background: radial-gradient(circle at 22% 28%, #FFEAB0 0%, transparent 52%), radial-gradient(circle at 78% 72%, #E8C782 0%, transparent 55%), radial-gradient(circle at 55% 52%, #FFF3D2 0%, transparent 48%), linear-gradient(135deg, #FDF3D4 0%, #D9B977 100%); background-size: 140% 140%, 140% 140%, 160% 160%, 100% 100%; animation: flow3 15s ease-in-out infinite alternate; }
+.bg-patients { background: radial-gradient(circle at 22% 78%, #A8E6CF 0%, transparent 55%), radial-gradient(circle at 78% 22%, #56CCF2 0%, transparent 58%), radial-gradient(circle at 55% 52%, #D4FC79 0%, transparent 48%), linear-gradient(135deg, #E8FBDC 0%, #6FCF97 100%); background-size: 140% 140%, 140% 140%, 160% 160%, 100% 100%; animation: flow3 19s ease-in-out infinite alternate; }
 @keyframes flow3 { 0% { background-position: 0% 100%, 100% 0%, 50% 50%, 0% 0%; filter: hue-rotate(0deg); } 50% { background-position: 40% 60%, 60% 40%, 70% 30%, 50% 50%; filter: hue-rotate(-6deg); } 100% { background-position: 100% 60%, 0% 40%, 20% 80%, 100% 100%; filter: hue-rotate(10deg); } }
 
 /* Tile content — compact */
@@ -157,9 +267,9 @@ html, body { background: #fff; color: #111; font-family: 'Poppins', -apple-syste
   text-transform: uppercase;
 }
 .tile-title {
-  font-size: clamp(24px, 2.8vw, 40px);
+  font-size: clamp(20px, 2.2vw, 30px);
   font-weight: 600;
-  letter-spacing: -1.4px;
+  letter-spacing: -1px;
   line-height: 1;
   color: #111;
   max-width: 80%;
@@ -235,7 +345,41 @@ html, body { background: #fff; color: #111; font-family: 'Poppins', -apple-syste
 
 <section class="hero">
   <h1 class="greeting"><span class="typed"></span><span class="cursor" id="cursor"></span></h1>
-  <p class="subtitle" id="subtitle">Where would you like to start today?</p>
+  <p class="subtitle" id="subtitle">Here's what's on your plate today.</p>
+</section>
+
+<section class="modules-wrap">
+  <div class="modules-grid">
+
+    <article class="module module-points" id="module-points">
+      <div class="module-kicker">01 · Your Edge Progress</div>
+      <div>
+        <div class="stat-amount"><span class="dollar">$</span><span id="m-spend">9,500</span></div>
+        <p class="stat-sub">You're <strong>$5,500</strong> away from <strong>Advocate</strong>.</p>
+      </div>
+      <div class="progress-track" aria-label="33% to Advocate"><div class="progress-fill" id="m-fill"></div></div>
+      <div class="module-foot">
+        <span class="lbl"><strong>$250</strong> in rewards balance</span>
+        <a href="rewards.html">Manage <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+      </div>
+    </article>
+
+    <article class="module module-checkin" id="module-checkin">
+      <div class="module-kicker">02 · Quick Patient Check-In</div>
+      <div>
+        <p class="checkin-question">Who's visiting today?</p>
+      </div>
+      <form class="checkin-form" id="quick-checkin-form" novalidate>
+        <input type="tel" inputmode="numeric" autocomplete="off" placeholder="(555) 000 · 0000" maxlength="16" id="quick-phone" aria-label="Patient phone">
+        <button type="submit">Check In <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></button>
+      </form>
+      <div class="module-foot">
+        <span class="lbl"><strong>12</strong> patients checked in today</span>
+        <a href="checkin.html">Open full <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+      </div>
+    </article>
+
+  </div>
 </section>
 
 <section class="tiles-wrap">
@@ -351,7 +495,37 @@ window.addEventListener('load', () => {
   tiles.forEach((tile, idx) => {
     setTimeout(() => tile.classList.add('show'), 600 + idx * 120);
   });
+  // Modules fade in just before the tiles
+  const modules = document.querySelectorAll('.module');
+  modules.forEach((m, idx) => setTimeout(() => m.classList.add('show'), 400 + idx * 140));
+  // Animate progress fill — 33.33% (2/3 to Advocate, matches /rewards.html)
+  setTimeout(() => {
+    const fill = document.getElementById('m-fill');
+    if (fill) fill.style.width = '33.33%';
+  }, 700);
 });
+
+// ─── Quick check-in module: format phone, route to full check-in on submit ───
+(function () {
+  const form = document.getElementById('quick-checkin-form');
+  const input = document.getElementById('quick-phone');
+  if (!form || !input) return;
+  function fmt(v) {
+    const d = v.replace(/\D/g, '').slice(0, 10);
+    if (!d) return '';
+    if (d.length <= 3) return '(' + d;
+    if (d.length <= 6) return '(' + d.slice(0, 3) + ') ' + d.slice(3);
+    return '(' + d.slice(0, 3) + ') ' + d.slice(3, 6) + ' · ' + d.slice(6);
+  }
+  input.addEventListener('input', () => { input.value = fmt(input.value); });
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const digits = input.value.replace(/\D/g, '').length;
+    if (digits < 10) { input.focus(); return; }
+    // Hand off to the full check-in page; pass the number via the URL hash
+    location.href = 'checkin.html#auto=' + encodeURIComponent(input.value);
+  });
+})();
 </script>
 </body>
 </html>

@@ -167,7 +167,7 @@ html,body{background:#fff;color:#111;font-family:'Poppins',-apple-system,BlinkMa
   .footer-nav{flex-wrap:wrap;gap:16px;}
 }
 </style>
-<script src="menu.js?v=1776974961" defer></script>
+<script src="menu.js?v=1777313523" defer></script>
 </head>
 <body>
 
@@ -430,6 +430,19 @@ checkAnother.addEventListener('click', () => {
 
 // Autofocus input on load (respecting keyboard users)
 window.addEventListener('load', () => setTimeout(() => phone.focus(), 1200));
+
+// If arrived from the home Modules variant via #auto=..., pre-fill and submit
+window.addEventListener('load', () => {
+  const m = location.hash.match(/auto=([^&]+)/);
+  if (!m) return;
+  const handed = decodeURIComponent(m[1]);
+  phone.value = handed;
+  phone.dispatchEvent(new Event('input'));
+  // Clear the hash so a refresh doesn't keep re-firing
+  history.replaceState(null, '', location.pathname);
+  // Auto-submit shortly after, so the user sees the transition + confetti
+  setTimeout(() => form.dispatchEvent(new Event('submit', { cancelable: true })), 350);
+});
 </script>
 </body>
 </html>
