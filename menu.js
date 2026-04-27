@@ -272,6 +272,21 @@
     </aside>
   `;
 
+  // ─── Rewrite every page-level home link to the user's chosen variant ───
+  function rewriteHomeLinks(targetUrl) {
+    document.querySelectorAll('a[href]').forEach(a => {
+      // Skip the in-menu Dashboard link — it gets its own href set elsewhere.
+      if (a.dataset.flag === 'dashboard') return;
+      const href = a.getAttribute('href');
+      // Match any of the known home variant filenames (with or without leading slash)
+      const norm = href.replace(/^\.?\//, '');
+      if (HOME_FILES.includes(norm)) {
+        a.setAttribute('href', targetUrl);
+      }
+    });
+  }
+  rewriteHomeLinks(homeUrl(settings));
+
   function inject() {
     const host = document.createElement('div');
     host.innerHTML = menuHTML;
@@ -328,6 +343,8 @@
           );
           const newUrl = homeUrl(settings);
           if (dashLink) dashLink.href = newUrl;
+          // Also keep the page-level Dashboard / brand-mark links in sync
+          rewriteHomeLinks(newUrl);
 
           // Apply palette live so non-home pages recolor immediately
           if (key === 'palette') applyPalette(settings.palette);
