@@ -4,3 +4,7 @@
 /tmp/
 node_modules/
 
+
+# experimental files (not part of revance-new-dash)
+birthday*.html
+rewards-app.html
