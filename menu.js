@@ -197,6 +197,19 @@
       background:linear-gradient(90deg,#E8C782,#D9B977)!important;
     }
 
+    /* Home tiles — make modules variant (and any other home that uses these classes)
+       respect the gold palette, so all 3 tiles flow champagne when palette=gold */
+    [data-palette="gold"] .bg-rewards,
+    [data-palette="gold"] .bg-products,
+    [data-palette="gold"] .bg-patients{
+      background:
+        radial-gradient(circle at 22% 28%, #FFEAB0 0%, transparent 52%),
+        radial-gradient(circle at 78% 72%, #E8C782 0%, transparent 55%),
+        radial-gradient(circle at 55% 52%, #FFF3D2 0%, transparent 48%),
+        linear-gradient(135deg, #FDF3D4 0%, #D9B977 100%)!important;
+      background-size:140% 140%,140% 140%,160% 160%,100% 100%!important;
+    }
+
     @media (max-width:640px){
       .rm-menu{padding:64px 28px 28px;gap:24px;}
       .rm-nav a{font-size:30px;padding:6px 0;}

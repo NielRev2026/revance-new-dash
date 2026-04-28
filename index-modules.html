@@ -94,10 +94,16 @@ html, body { background: #fff; color: #111; font-family: 'Poppins', -apple-syste
   max-width: 1520px;
   margin: 0 auto;
 }
+/* 3-col grid matches the tiles below: Points spans 2, Check-In spans 1 */
 .modules-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(3, 1fr);
   gap: 20px;
+}
+.module-points  { grid-column: span 2; }
+.module-checkin { grid-column: span 1; }
+@media (max-width: 720px) {
+  .module-points, .module-checkin { grid-column: span 3; }
 }
 .module {
   position: relative;
@@ -326,7 +332,7 @@ html, body { background: #fff; color: #111; font-family: 'Poppins', -apple-syste
   .bg-rewards, .bg-products, .bg-patients, .tile-bg::before, .cursor { animation: none !important; }
 }
 </style>
-<script src="menu.js?v=1777315131" defer></script>
+<script src="menu.js?v=1777393835" defer></script>
 </head>
 <body>
 
