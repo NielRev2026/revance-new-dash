@@ -370,10 +370,13 @@
           // Apply palette live so non-home pages recolor immediately
           if (key === 'palette') applyPalette(settings.palette);
 
-          // If user is on a home variant, jump to the matching file.
-          // (Home variants have the palette baked into their tile CSS, so
-          //  we need the right file to render the tiles correctly.)
-          if (isOnHome && currentPage !== newUrl.toLowerCase()) {
+          // ─── Navigate on toggle ───
+          // Layout is fundamentally a "switch dashboards" action — always navigate.
+          // Palette / density changes only swap files when already on a home variant.
+          const targetIsDifferent = currentPage !== newUrl.toLowerCase();
+          if (key === 'layout' && targetIsDifferent) {
+            location.href = newUrl;
+          } else if (isOnHome && targetIsDifferent) {
             location.href = newUrl;
           }
         });
