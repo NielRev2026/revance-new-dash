@@ -2,8 +2,9 @@
 // Auto-wires to any .nav-avatar click, injects full-height panel with large-font links.
 (function () {
   // ─── HOME VARIANTS ───
-  // Layout=Tiles is the standard 3-tile home (palette × density grid).
-  // Layout=Modules adds Points + Check-In cards above the tiles (single density).
+  // Layout=Tiles    standard 3-tile home (palette × density grid)
+  // Layout=Modules  Points + Check-In cards above the tiles
+  // Layout=Hub      tiles + secondary tools/resources grid below
   const TILE_VARIANTS = {
     'colored-compact':  'index.html',
     'colored-spacious': 'index-spacious.html',
@@ -11,7 +12,8 @@
     'gold-spacious':    'index-gold-spacious.html',
   };
   const MODULES_FILE = 'index-modules.html';
-  const HOME_FILES = [...Object.values(TILE_VARIANTS), MODULES_FILE];
+  const HUB_FILE     = 'index-hub.html';
+  const HOME_FILES = [...Object.values(TILE_VARIANTS), MODULES_FILE, HUB_FILE];
   const SETTINGS_KEY = 'revanceHomeSettings';
 
   function readSettings() {
@@ -19,12 +21,13 @@
     try { s = JSON.parse(localStorage.getItem(SETTINGS_KEY) || '{}') || {}; } catch (e) {}
     s.palette = (s.palette === 'gold') ? 'gold' : 'colored';
     s.density = (s.density === 'spacious') ? 'spacious' : 'compact';
-    s.layout  = (s.layout  === 'modules')  ? 'modules'  : 'tiles';
+    if (s.layout !== 'modules' && s.layout !== 'hub') s.layout = 'tiles';
     return s;
   }
   function writeSettings(s) { localStorage.setItem(SETTINGS_KEY, JSON.stringify(s)); }
   function homeUrl(s) {
     if (s.layout === 'modules') return MODULES_FILE;
+    if (s.layout === 'hub')     return HUB_FILE;
     return TILE_VARIANTS[s.palette + '-' + s.density];
   }
 
@@ -109,11 +112,12 @@
       display:inline-flex;gap:2px;background:#f5f5f5;padding:3px;
     }
     .rm-toggle-btn{
-      padding:7px 14px;background:transparent;border:none;
+      padding:7px 12px;background:transparent;border:none;
       font-family:inherit;font-size:11px;font-weight:500;letter-spacing:.3px;
       color:#666;cursor:pointer;
       transition:background .2s ease,color .2s ease;
       text-transform:uppercase;
+      white-space:nowrap;
     }
     .rm-toggle-btn:hover{color:#111;}
     .rm-toggle-btn.active{background:#111;color:#fff;}
@@ -259,6 +263,7 @@
           <div class="rm-toggle" data-setting="layout">
             <button class="rm-toggle-btn" data-value="tiles">Tiles</button>
             <button class="rm-toggle-btn" data-value="modules">Modules</button>
+            <button class="rm-toggle-btn" data-value="hub">Hub</button>
           </div>
         </div>
         <div class="rm-settings-row">
