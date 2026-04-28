@@ -13,7 +13,8 @@
   };
   const MODULES_FILE = 'index-modules.html';
   const HUB_FILE     = 'index-hub.html';
-  const HOME_FILES = [...Object.values(TILE_VARIANTS), MODULES_FILE, HUB_FILE];
+  const APP_FILE     = 'index-app.html';
+  const HOME_FILES = [...Object.values(TILE_VARIANTS), MODULES_FILE, HUB_FILE, APP_FILE];
   const SETTINGS_KEY = 'revanceHomeSettings';
 
   function readSettings() {
@@ -21,13 +22,14 @@
     try { s = JSON.parse(localStorage.getItem(SETTINGS_KEY) || '{}') || {}; } catch (e) {}
     s.palette = (s.palette === 'gold') ? 'gold' : 'colored';
     s.density = (s.density === 'spacious') ? 'spacious' : 'compact';
-    if (s.layout !== 'modules' && s.layout !== 'hub') s.layout = 'tiles';
+    if (!['modules','hub','app'].includes(s.layout)) s.layout = 'tiles';
     return s;
   }
   function writeSettings(s) { localStorage.setItem(SETTINGS_KEY, JSON.stringify(s)); }
   function homeUrl(s) {
     if (s.layout === 'modules') return MODULES_FILE;
     if (s.layout === 'hub')     return HUB_FILE;
+    if (s.layout === 'app')     return APP_FILE;
     return TILE_VARIANTS[s.palette + '-' + s.density];
   }
 
@@ -264,6 +266,7 @@
             <button class="rm-toggle-btn" data-value="tiles">Tiles</button>
             <button class="rm-toggle-btn" data-value="modules">Modules</button>
             <button class="rm-toggle-btn" data-value="hub">Hub</button>
+            <button class="rm-toggle-btn" data-value="app">App</button>
           </div>
         </div>
         <div class="rm-settings-row">

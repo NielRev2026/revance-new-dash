@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>New Dash · Modules — Revance</title>
+<title>New Dash · App — Revance</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&family=Playfair+Display:ital,wght@1,400&display=swap" rel="stylesheet">
@@ -11,17 +11,75 @@
 * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
 html, body { background: #fff; color: #111; font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif; overflow-x: hidden; min-height: 100vh; }
 
-/* ─── NAV ─── */
-.nav { position: fixed; top: 0; left: 0; right: 0; height: 64px; display: flex; align-items: center; justify-content: space-between; padding: 0 40px; background: rgba(255,255,255,0.72); backdrop-filter: saturate(180%) blur(24px); -webkit-backdrop-filter: saturate(180%) blur(24px); border-bottom: 1px solid rgba(0,0,0,0.04); z-index: 100; }
-.brand { font-size: 14px; font-weight: 600; letter-spacing: 3px; color: #111; }
-.nav-right { display: flex; align-items: center; gap: 32px; }
-.nav-link { font-size: 13px; font-weight: 500; color: #666; text-decoration: none; transition: color .2s ease; }
-.nav-link:hover { color: #111; }
+/* ─── NAV (top bar hidden in App layout — sidebar takes over) ─── */
+.nav { display: none; }
 .nav-avatar { width: 32px; height: 32px; background: linear-gradient(135deg, #FFB088, #FF7A9C); box-shadow: 0 2px 8px rgba(255,122,156,0.25); }
 
-/* ─── HERO — minimal for modules layout ─── */
+/* ─── SIDEBAR ─── */
+.sb {
+  position: fixed; top: 0; left: 0; bottom: 0;
+  width: 240px;
+  background: #fafafa;
+  border-right: 1px solid #eaeaea;
+  display: flex; flex-direction: column;
+  padding: 28px 16px 20px;
+  z-index: 90;
+  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+.sb-brand {
+  display: block;
+  padding: 0 14px 24px;
+  border-bottom: 1px solid #eaeaea;
+  margin-bottom: 16px;
+  text-decoration: none;
+}
+.sb-brand .brand { font-size: 14px; font-weight: 600; letter-spacing: 3px; color: #111; }
+
+.sb-section-label {
+  font-size: 10px; font-weight: 600; letter-spacing: 2px;
+  color: #999; text-transform: uppercase;
+  padding: 12px 14px 10px;
+}
+
+.sb-nav { display: flex; flex-direction: column; gap: 2px; flex: 1; }
+.sb-link {
+  display: flex; align-items: center; gap: 12px;
+  padding: 11px 14px;
+  color: #555;
+  font-size: 14px; font-weight: 500;
+  text-decoration: none;
+  transition: background .2s ease, color .2s ease;
+  position: relative;
+}
+.sb-link:hover { background: #f1f1f1; color: #111; }
+.sb-link.active { background: #111; color: #fff; }
+.sb-link.active .sb-icon { stroke: #fff; }
+[data-palette="gold"] .sb-link.active { background: #D9B977; color: #111; }
+[data-palette="gold"] .sb-link.active .sb-icon { stroke: #111; }
+
+.sb-icon { width: 18px; height: 18px; flex-shrink: 0; stroke: currentColor; transition: stroke .2s ease; }
+
+/* User block at bottom */
+.sb-foot {
+  padding: 14px;
+  border-top: 1px solid #eaeaea;
+  margin-top: 12px;
+  display: flex; align-items: center; gap: 12px;
+  cursor: pointer;
+  transition: background .2s ease;
+}
+.sb-foot:hover { background: #f1f1f1; }
+.sb-foot .nav-avatar { width: 36px; height: 36px; flex-shrink: 0; }
+.sb-foot-text { display: flex; flex-direction: column; min-width: 0; }
+.sb-foot-name { font-size: 13px; font-weight: 600; color: #111; line-height: 1.2; }
+.sb-foot-org { font-size: 11px; font-weight: 400; color: #888; line-height: 1.2; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* Push main content right of sidebar */
+body { padding-left: 240px; }
+
+/* ─── HERO — minimal for app layout (no fixed top nav) ─── */
 .hero {
-  padding: 96px 64px 16px;
+  padding: 32px 48px 12px;
   max-width: 1520px;
   margin: 0 auto;
   position: relative;
@@ -90,7 +148,7 @@ html, body { background: #fff; color: #111; font-family: 'Poppins', -apple-syste
 
 /* ─── MODULES (Points + Check-In) ─── */
 .modules-wrap {
-  padding: 8px 64px 16px;
+  padding: 8px 48px 16px;
   max-width: 1520px;
   margin: 0 auto;
 }
@@ -209,7 +267,7 @@ html, body { background: #fff; color: #111; font-family: 'Poppins', -apple-syste
 
 /* ─── TILES — compact, sitting just under modules ─── */
 .tiles-wrap {
-  padding: 12px 64px 28px;
+  padding: 12px 48px 28px;
   max-width: 1520px;
   margin: 0 auto;
 }
@@ -298,7 +356,7 @@ html, body { background: #fff; color: #111; font-family: 'Poppins', -apple-syste
 
 
 /* ─── FOOTER ─── */
-.footer { padding: 40px 64px; border-top: 1px solid #eaeaea; margin-top: 0; }
+.footer { padding: 32px 48px; border-top: 1px solid #eaeaea; margin-top: 0; }
 .footer-inner { max-width: 1520px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; gap: 32px; flex-wrap: wrap; }
 .footer-left { display: flex; align-items: center; gap: 24px; }
 .footer-brand { font-size: 12px; font-weight: 600; letter-spacing: 2px; color: #111; }
@@ -309,7 +367,7 @@ html, body { background: #fff; color: #111; font-family: 'Poppins', -apple-syste
 
 /* ─── RESOURCES (Hub variant — utility links under main tiles) ─── */
 .resources-wrap {
-  padding: 32px 64px 80px;
+  padding: 32px 48px 56px;
   max-width: 1520px;
   margin: 0 auto;
 }
@@ -383,19 +441,33 @@ html, body { background: #fff; color: #111; font-family: 'Poppins', -apple-syste
 
 /* ─── Responsive ─── */
 @media (max-width: 1024px) {
-  .hero { padding: 90px 40px 16px; min-height: 40vh; }
-  .tiles-wrap { padding: 8px 40px 32px; }
+  .hero { padding: 28px 32px 12px; min-height: 40vh; }
+  .modules-wrap { padding: 8px 32px 16px; }
+  .tiles-wrap { padding: 8px 32px 32px; }
+  .resources-wrap { padding: 24px 32px 56px; }
+  .footer { padding: 28px 32px; }
   .tiles { gap: 16px; }
 }
-@media (max-width: 720px) {
-  .nav { padding: 0 20px; }
-  .nav-link { display: none; }
-  .hero { padding: 88px 24px 16px; min-height: auto; }
-  .tiles-wrap { padding: 8px 24px 24px; }
+@media (max-width: 880px) {
+  /* Collapse the sidebar to icon-only at narrow widths */
+  body { padding-left: 64px; }
+  .sb { width: 64px; padding: 16px 8px; }
+  .sb-brand, .sb-section-label, .sb-link span, .sb-foot-text { display: none; }
+  .sb-link { justify-content: center; padding: 12px 0; }
+  .sb-foot { padding: 10px 8px; justify-content: center; }
+  .sb-foot .nav-avatar { margin: 0; }
+}
+@media (max-width: 640px) {
+  body { padding-left: 0; }
+  .sb { display: none; }
+  .hero { padding: 28px 20px 12px; min-height: auto; }
+  .modules-wrap { padding: 8px 20px 16px; }
+  .tiles-wrap { padding: 8px 20px 20px; }
+  .resources-wrap { padding: 24px 20px 40px; }
+  .footer { padding: 24px 20px; }
   .tiles { grid-template-columns: 1fr; }
-  .tile { aspect-ratio: 2.1 / 1; min-height: 180px; max-height: 220px; }
+  .tile { aspect-ratio: 2.1 / 1; min-height: 180px; }
   .tile-inner { padding: 20px; }
-  .footer { padding: 28px 24px; }
   .footer-inner { flex-direction: column; align-items: flex-start; gap: 16px; }
   .footer-left { flex-direction: column; align-items: flex-start; gap: 6px; }
   .footer-nav { flex-wrap: wrap; gap: 16px; }
@@ -408,6 +480,50 @@ html, body { background: #fff; color: #111; font-family: 'Poppins', -apple-syste
 <script src="menu.js?v=1777410094" defer></script>
 </head>
 <body>
+
+<aside class="sb" aria-label="Primary navigation">
+  <a class="sb-brand" href="index.html"><span class="brand">REVANCE</span></a>
+
+  <p class="sb-section-label">Main</p>
+  <nav class="sb-nav">
+    <a class="sb-link active" href="index.html" data-flag="dashboard">
+      <svg class="sb-icon" viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>
+      <span>Dashboard</span>
+    </a>
+    <a class="sb-link" href="rewards.html">
+      <svg class="sb-icon" viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      <span>Edge</span>
+    </a>
+    <a class="sb-link" href="purchase.html">
+      <svg class="sb-icon" viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+      <span>Products</span>
+    </a>
+    <a class="sb-link" href="experience.html">
+      <svg class="sb-icon" viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l1.95 5.95L20 10l-5.95 2.05L12 18l-2.05-5.95L4 10l5.95-2.05z"/></svg>
+      <span>Experience</span>
+    </a>
+    <a class="sb-link" href="#">
+      <svg class="sb-icon" viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6"/><path d="M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+      <span>Education</span>
+    </a>
+    <a class="sb-link" href="numbers.html">
+      <svg class="sb-icon" viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+      <span>Insights</span>
+    </a>
+    <a class="sb-link" href="checkin.html">
+      <svg class="sb-icon" viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="4" rx="1"/><path d="M9 4H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-2"/><polyline points="9 14 11 16 15 12"/></svg>
+      <span>Check In</span>
+    </a>
+  </nav>
+
+  <div class="sb-foot" title="Open menu / settings">
+    <div class="nav-avatar"></div>
+    <div class="sb-foot-text">
+      <span class="sb-foot-name">Dr. Jane Channel</span>
+      <span class="sb-foot-org">Platinum Aesthetics PLLC</span>
+    </div>
+  </div>
+</aside>
 
 <nav class="nav">
   <div class="brand">REVANCE</div>
