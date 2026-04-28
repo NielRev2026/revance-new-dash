@@ -39,7 +39,7 @@
 
   const NAV = [
     { label: 'Dashboard',   href: homeUrl(settings), flag: 'dashboard' },
-    { label: 'Rewards',     href: 'rewards.html' },
+    { label: 'Reva',        href: 'rewards.html' },
     { label: 'Products',    href: 'purchase.html' },
     { label: 'Experience',  href: 'experience.html' },
     { label: 'Education',   href: '#' },
