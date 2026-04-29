@@ -8,3 +8,10 @@ node_modules/
 # experimental files (not part of revance-new-dash)
 birthday*.html
 rewards-app.html
+
+# wrangler files
+.wrangler
+.dev.vars*
+!.dev.vars.example
+.env*
+!.env.example
