@@ -18,11 +18,12 @@
   const SETTINGS_KEY = 'revanceHomeSettings';
 
   function readSettings() {
+    // Defaults: Gold palette + Modules layout + Compact density
     let s = {};
     try { s = JSON.parse(localStorage.getItem(SETTINGS_KEY) || '{}') || {}; } catch (e) {}
-    s.palette = (s.palette === 'gold') ? 'gold' : 'colored';
+    s.palette = (s.palette === 'colored') ? 'colored' : 'gold';
     s.density = (s.density === 'spacious') ? 'spacious' : 'compact';
-    if (!['modules','hub','app'].includes(s.layout)) s.layout = 'tiles';
+    if (!['tiles','hub','app'].includes(s.layout)) s.layout = 'modules';
     return s;
   }
   function writeSettings(s) { localStorage.setItem(SETTINGS_KEY, JSON.stringify(s)); }
@@ -41,6 +42,20 @@
     document.documentElement.dataset.palette = p;
   }
   applyPalette(settings.palette);
+
+  // ─── First-time visitor: route from bare index.html to the default variant ───
+  // If localStorage has no saved settings AND the user landed on index.html
+  // (the static entry), redirect to whatever homeUrl(settings) computes —
+  // which, on defaults, is index-modules.html with the gold palette baked in.
+  (function firstVisitRedirect() {
+    if (localStorage.getItem(SETTINGS_KEY)) return;
+    const here = (location.pathname.split('/').pop() || 'index.html').toLowerCase();
+    if (here !== 'index.html') return;
+    const target = homeUrl(settings);
+    if (target === here) return;
+    writeSettings(settings);            // persist defaults so we don't loop
+    location.replace(target);
+  })();
 
   const NAV = [
     { label: 'Dashboard',   href: homeUrl(settings), flag: 'dashboard' },
